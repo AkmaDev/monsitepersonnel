@@ -1,18 +1,20 @@
 "use client";
-import { useState } from "react";
+import { useState, FC } from "react";
 import { Button } from "@/components/ui/button";
-
-import { ExternalLink } from "lucide-react";
-import Link from "next/link";
-import { FaGithub } from "react-icons/fa";
 import ProjectCard from "./ProjectCard";
-import { projects } from "@/data/project";
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
+import { Project } from "@/data/project";
 
-const Portfolio = () => {
+interface PortfolioProps {
+  projects: Project[];
+}
+
+const Portfolio: FC<PortfolioProps> = ({ projects }) => {
   const [filter, setFilter] = useState<
     "all" | "poster" | "video" | "animation"
   >("all");
-
   const categories = ["all", "poster", "video", "animation"] as const;
   const categoryLabels = {
     all: "Tous",
@@ -44,11 +46,6 @@ const Portfolio = () => {
               key={cat}
               variant={filter === cat ? "default" : "outline"}
               onClick={() => setFilter(cat)}
-              className={
-                filter === cat
-                  ? "btn-professional"
-                  : "border-border hover:border-primary"
-              }
             >
               {categoryLabels[cat]}
             </Button>
@@ -59,8 +56,8 @@ const Portfolio = () => {
       {/* Projects Grid */}
       <main className="section-spacing">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+          {filteredProjects.map((p) => (
+            <ProjectCard key={p.id} project={p} />
           ))}
         </div>
       </main>
@@ -78,27 +75,17 @@ const Portfolio = () => {
               vidéo.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button className="btn-professional" asChild>
+              <Button asChild className="btn-professional">
                 <a href="mailto:manews193@gmail.com">
                   <ExternalLink className="w-4 h-4 mr-2" />
                   Me contacter
                 </a>
               </Button>
-              <Button
-                variant="outline"
-                className="border-border hover:border-primary"
-                asChild
-              >
-                <Button
-                  variant="outline"
-                  className="border-border hover:border-primary"
-                  asChild
-                >
-                  <Link href="/" className="text-foreground hover:text-primary">
-                    <FaGithub className="w-4 h-4 mr-2" />
-                    Retour au CV
-                  </Link>
-                </Button>
+              <Button asChild variant="outline">
+                <Link href="/">
+                  <FaGithub className="w-4 h-4 mr-2" />
+                  Retour au CV
+                </Link>
               </Button>
             </div>
           </div>

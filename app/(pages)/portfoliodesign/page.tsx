@@ -1,39 +1,26 @@
 import Portfolio from "@/components/Portofolio";
+import { projects as allProjects, Project } from "@/data/project";
 import Head from "next/head";
 
 const PortfolioPage = () => {
   const pageTitle = "Portfolio Design | Manassé AKPOVI";
   const pageDescription =
-    "Découvrez mes créations graphiques, affiches et vidéos réalisées pour divers projets et clients. Chaque projet reflète ma passion pour le design et l'innovation visuelle.";
+    "Découvrez mes créations graphiques, affiches et vidéos réalisées pour divers projets et clients.";
 
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     name: "Portfolio Design - Manassé AKPOVI",
     description: pageDescription,
-    itemListElement: [
-      {
-        "@type": "CreativeWork",
-        position: 1,
-        name: "Campagne Publicitaire - Produits Locaux",
-        url: "https://instagram.com/p/example1",
-        creator: { "@type": "Person", name: "Manassé AKPOVI" },
-        datePublished: "2024-01-01",
-        about:
-          "Série d'affiches pour la promotion des producteurs locaux béninois.",
-      },
-      {
-        "@type": "CreativeWork",
-        position: 2,
-        name: "Trailer - Flipbook Bible Enfants",
-        url: "https://youtube.com/watch?v=example2",
-        creator: { "@type": "Person", name: "Manassé AKPOVI" },
-        datePublished: "2024-01-01",
-        about:
-          "Vidéo de présentation interactive pour l'application de lecture biblique des enfants.",
-      },
-      // ... à ajouter
-    ],
+    itemListElement: allProjects.map((p: Project, index: number) => ({
+      "@type": "CreativeWork",
+      position: index + 1,
+      name: p.title,
+      url: p.link,
+      creator: { "@type": "Person", name: "Manassé AKPOVI" },
+      datePublished: p.year,
+      about: p.description,
+    })),
   };
 
   return (
@@ -49,15 +36,15 @@ const PortfolioPage = () => {
         <meta property="og:type" content="website" />
         <meta
           property="og:url"
-          content="https://manasse-akpovi.com/portfolio-design"
+          content="https://manasseakpovi.com/portfoliodesign"
         />
-        <meta property="og:image" content="/og-image.png" />
+        <meta property="og:image" content="/og-portfolio.png" />
 
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={pageTitle} />
         <meta name="twitter:description" content={pageDescription} />
-        <meta name="twitter:image" content="/og-image.png" />
+        <meta name="twitter:image" content="/og-portfolio.png" />
 
         {/* JSON-LD */}
         <script
@@ -66,7 +53,7 @@ const PortfolioPage = () => {
         />
       </Head>
 
-      <Portfolio />
+      <Portfolio projects={allProjects} />
     </>
   );
 };
