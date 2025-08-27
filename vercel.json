@@ -1,8 +1,14 @@
 {
   "redirects": [
     {
-      "source": "https://manasseakpovi.com/(.*)",
+      "source": "/(.*)",
       "destination": "https://www.manasseakpovi.com/$1",
+      "has": [
+        {
+          "type": "host",
+          "value": "manasseakpovi.com"
+        }
+      ],
       "permanent": true
     }
   ]
