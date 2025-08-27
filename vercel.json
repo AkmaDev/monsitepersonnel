@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "https://manasseakpovi.com/(.*)",
+      "destination": "https://www.manasseakpovi.com/$1",
+      "permanent": true
+    }
+  ]
+}
