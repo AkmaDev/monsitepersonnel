@@ -3,49 +3,101 @@
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
-import Link from "next/link";
+import { useState, useRef } from "react";
+import { APP_CONFIG } from "@/lib/config";
+import DOMPurify from "dompurify";
+import { supabase } from "@/lib/supabaseClient";
 
-const ComingSoon: React.FC = () => {
-  const [email, setEmail] = useState<string>("");
-  const [isSubscribed, setIsSubscribed] = useState<boolean>(false);
+type NotificationType = "success" | "error" | "info";
 
-  const handleSubscribe = (e: React.FormEvent<HTMLFormElement>) => {
+const ComingSoon = () => {
+  const [email, setEmail] = useState("");
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [notification, setNotification] = useState<{
+    type: NotificationType;
+    message: string;
+  } | null>(null);
+  const lastSubscribeTime = useRef<number>(0);
+
+  const showNotification = (type: NotificationType, message: string) => {
+    setNotification({ type, message });
+    setTimeout(() => setNotification(null), 4000); // disparaît après 4s
+  };
+
+  const handleSubscribe = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (email) {
-      setIsSubscribed(true);
+    if (!email) return;
+
+    // Rate limiting
+    const now = Date.now();
+    if (now - lastSubscribeTime.current < APP_CONFIG.rateLimits.newsletter) {
+      showNotification(
+        "error",
+        "⏰ Trop rapide. Veuillez attendre avant de réessayer."
+      );
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const sanitizedEmail = DOMPurify.sanitize(email, { ALLOWED_TAGS: [] })
+        .trim()
+        .toLowerCase();
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(sanitizedEmail)) {
+        showNotification(
+          "error",
+          "❌ Email invalide. Veuillez entrer une adresse email valide."
+        );
+        return;
+      }
+
+      const { data, error } = await supabase.functions.invoke(
+        "handle-subscription",
+        {
+          body: { email: sanitizedEmail, action: "subscribe" },
+        }
+      );
+
+      if (error) throw error;
+
+      lastSubscribeTime.current = now;
       setEmail("");
+
+      if (data?.alreadySubscribed) {
+        showNotification("info", "⚠️ Cet email est déjà inscrit !");
+      } else {
+        setIsSubscribed(true);
+      }
+    } catch (err) {
+      console.error("Subscription error:", err);
+      showNotification(
+        "error",
+        "❌ Une erreur est survenue. Veuillez réessayer."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
+    <div className="min-h-screen flex  items-center justify-center px-4">
       <div className="max-w-lg w-full text-center space-y-8 animate-fade-in">
         {/* Logo/Brand */}
-        <div className="space-y-4">
-          {/* <div className="w-16 h-16 mx-auto bg-gradient-accent rounded-full flex items-center justify-center shadow-accent">
-            <Clock className="w-8 h-8 text-accent-foreground" />
-          </div>
-
-          <h1 className="text-4xl lg:text-5xl font-serif font-bold text-gradient">
-            Strategic Insights
-            <span className="block text-accent-glow bg-gradient-accent bg-clip-text text-transparent">
-              Africa
-            </span>
-          </h1> */}
-        </div>
+        <div className="space-y-4"></div>
 
         {/* Main message */}
         <div className="space-y-8 animate-slide-up">
           <h2 className="text-3xl lg:text-4xl font-serif text-accent">
             Bientôt en ligne
           </h2>
-
-          <div className="bg-card border border-border rounded-xl p-8 shadow-elegant">
+          <div className="card-premium">
             <div className="space-y-6">
               <div className="text-center">
                 <p className="text-muted-foreground mb-6">
-                  Soyez informé du lancement
+                  Soyez parmi les premiers informés du lancement
                 </p>
               </div>
 
@@ -58,15 +110,43 @@ const ComingSoon: React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     className="flex-1 bg-input border-border focus:border-accent transition-colors"
                     required
+                    disabled={isLoading}
                   />
-                  <Button type="submit" className="group">
+                  <Button
+                    type="submit"
+                    className="btn-professional"
+                    disabled={isLoading}
+                  >
                     <Mail className="w-4 h-4 mr-2" />
-                    Notifier
+                    {isLoading ? "..." : "Notifier"}
                   </Button>
                 </form>
               ) : (
-                <div className="text-accent text-center font-medium">
+                <div className="text-primary/90 text-center font-medium">
                   ✓ Merci ! Vous serez notifié du lancement.
+                </div>
+              )}
+
+              {/* Notification */}
+              {notification && (
+                <div
+                  className={`mt-4 px-4 py-3 rounded-lg shadow-md flex items-center justify-center font-medium text-center`}
+                  style={{
+                    backgroundColor:
+                      notification.type === "info"
+                        ? "#1e293b"
+                        : notification.type === "error"
+                        ? "hsl(var(--destructive))"
+                        : "hsl(var(--accent))",
+                    color:
+                      notification.type === "info"
+                        ? "#3b82f6"
+                        : notification.type === "error"
+                        ? "hsl(var(--destructive-foreground))"
+                        : "hsl(var(--accent-foreground))",
+                  }}
+                >
+                  {notification.message}
                 </div>
               )}
             </div>
@@ -77,12 +157,12 @@ const ComingSoon: React.FC = () => {
         <div className="space-y-4">
           <div className="flex justify-between text-sm text-muted-foreground">
             <span>Développement</span>
-            <span>75%</span>
+            <span>85%</span>
           </div>
           <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
             <div
-              className="h-full bg-primary rounded-full transition-all duration-1000 ease-out shadow-accent"
-              style={{ width: "75%" }}
+              className="h-full bg-primary/90 rounded-full transition-all duration-1000 ease-out shadow-accent"
+              style={{ width: "85%" }}
             />
           </div>
         </div>
@@ -91,16 +171,6 @@ const ComingSoon: React.FC = () => {
         <div className="text-center text-sm text-muted-foreground">
           <p>Lancement prévu :</p>
           <p className="text-accent font-medium">T1 2025</p>
-        </div>
-
-        {/* Back to temp site */}
-        <div className="pt-8">
-          <Link
-            href="/"
-            className="text-muted-foreground hover:text-foreground transition-colors"
-          >
-            ← Retour au site temporaire
-          </Link>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
+import Link from "next/link";
 // import profilePhoto from "@/assets/profile-photo.jpg";
 
 const ProfileHeader: FC = () => {
@@ -57,12 +58,7 @@ const ProfileHeader: FC = () => {
 
           {/* Boutons de profils et portfolio */}
           <div className="flex justify-center gap-4 flex-wrap ">
-            <Button
-              variant="outline"
-              size="lg"
-              className="btn-professional"
-              asChild
-            >
+            <Button variant="outline" size="lg" className="" asChild>
               <a
                 href="https://www.linkedin.com/in/manasse-akpovi"
                 target="_blank"
@@ -74,12 +70,7 @@ const ProfileHeader: FC = () => {
               </a>
             </Button>
 
-            <Button
-              variant="outline"
-              size="lg"
-              className="btn-professional"
-              asChild
-            >
+            <Button variant="outline" size="lg" className="" asChild>
               <a
                 href="https://github.com/AkmaDev"
                 target="_blank"
@@ -91,21 +82,11 @@ const ProfileHeader: FC = () => {
               </a>
             </Button>
 
-            <Button
-              variant="outline"
-              size="lg"
-              className="btn-professional"
-              asChild
-            >
-              <a
-                href="/portfoliodesign"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-muted-foreground"
-              >
+            <Button variant="outline" size="lg" className="" asChild>
+              <Link href="/portfoliodesign" className="text-muted-foreground">
                 <ExternalLink className="w-5 h-5 mr-2" />
                 Portfolio Design
-              </a>
+              </Link>
             </Button>
           </div>
         </div>

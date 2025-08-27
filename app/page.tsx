@@ -1,3 +1,4 @@
+"use client";
 import { FC } from "react";
 import Head from "next/head";
 import Image from "next/image";
@@ -86,6 +87,25 @@ const Home: FC = () => {
         <meta name="twitter:image" content="/og-homepage.png" />
       </Head>
 
+      {/* <div className="fixed top-4 right-4 z-50 flex gap-2">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => console.log("Contact cliqué")}
+          className="btn-professional"
+        >
+          Contact
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => console.log("Admin cliqué")}
+          className="btn-professional"
+        >
+          Admin
+        </Button>
+      </div> */}
+
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <div className="w-full max-w-lg mx-auto">
           {/* Profile Section */}
@@ -106,17 +126,27 @@ const Home: FC = () => {
             </h1>
 
             {/* Trois verbes d'action avec séparateurs */}
-            <div className="flex items-center justify-center gap-2 text-muted-foreground">
-              <span className="font-semibold text-lg">Créer</span>
-              <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
-              <span className="font-semibold text-lg">Révéler</span>
-              <div className="w-2 h-2 bg-primary rounded-full flex-shrink-0"></div>
-              <span className="font-semibold text-lg">Impacter</span>
+            <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
+              <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
+                Développeur frontend
+              </span>
+              <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
+                Créateur de contenu
+              </span>
+              <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
+                Innovation sociale
+              </span>
             </div>
 
             {/* Description / tagline */}
-            <p className="text-muted-foreground text-lg leading-relaxed mt-2">
-              Insights, design et systèmes qui transforment les nations
+            {/* <p className="text-muted-foreground text-lg leading-relaxed mb-4">
+              Développeur frontend • Créateur de contenu • Innovation sociale
+            </p> */}
+
+            <p className="text-muted-foreground leading-relaxed text-center max-w-md mx-auto">
+              J&apos;allie technologie et créativité pour transformer des idées
+              en solutions digitales impactantes. Passionné par l&apos;Afrique
+              moderne et les systèmes qui façonnent l&apos;avenir.
             </p>
           </div>
 
@@ -170,17 +200,17 @@ const Home: FC = () => {
           <div className="text-center pt-8 border-t border-border">
             <div className="flex items-center justify-center gap-4 mb-4">
               <a
-                href="mailto:contact@strategic-insights-africa.com"
+                href="mailto:manasse.akpovi@manasseakpovi.com"
                 className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
               >
                 <Mail className="h-4 w-4" />
                 <span className="text-sm">
-                  contact@strategic-insights-africa.com
+                  manasse.akpovi@manasseakpovi.com
                 </span>
               </a>
             </div>
             <p className="text-xs text-muted-foreground">
-              © 2024 Strategic Insights Africa. Tous droits réservés.
+              © 2024 Manassé AKPOVI. Tous droits réservés.
             </p>
           </div>
         </div>

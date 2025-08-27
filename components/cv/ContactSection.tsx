@@ -5,8 +5,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
-import { FaLinkedin, FaGithub } from "react-icons/fa";
-import { useToast } from "@/hooks/use-toast";
+import { toast } from "sonner";
+import { supabase } from "@/lib/supabaseClient";
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -14,9 +14,10 @@ const ContactSection = () => {
     email: "",
     subject: "",
     message: "",
+    company: "",
   });
 
-  const { toasts, toast } = useToast();
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -24,42 +25,80 @@ const ContactSection = () => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message envoyé !",
-      description: "Je vous répondrai dans les plus brefs délais.",
-    });
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.functions.invoke("handle-contact", {
+        body: formData,
+      });
+
+      if (error) throw error;
+
+      // const res = await fetch("/api/contact", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     name: formData.name,
+      //     email: formData.email,
+      //     subject: formData.subject,
+      //     message: formData.message,
+      //     // si tu as un champ honeypot
+      //     company: formData.company || "",
+      //   }),
+      // });
+
+      // const data = await res.json();
+      // if (!res.ok) throw new Error(data?.error || "Failed to send");
+
+      // ✅ Toast de succès
+      toast.success("Message envoyé ! Je vous répondrai bientôt.", {
+        style: {
+          background: "hsl(var(--primary))",
+          color: "hsl(var(--primary-foreground))",
+          boxShadow: "var(--shadow-premium)",
+          borderRadius: "var(--radius)",
+          padding: "1rem 1.5rem",
+        },
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        company: "",
+      });
+    } catch (error: unknown) {
+      console.error("Contact error:", error);
+
+      // ❌ Toast d'erreur
+      toast.error("Une erreur est survenue. Veuillez réessayer.", {
+        style: {
+          background: "hsl(var(--destructive))",
+          color: "hsl(var(--destructive-foreground))",
+          boxShadow: "var(--shadow-premium)",
+          borderRadius: "var(--radius)",
+          padding: "1rem 1.5rem",
+        },
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
     <section className="section-spacing bg-card/50 relative">
-      {/* Toaster */}
-      <div className="fixed top-4 right-4 flex flex-col gap-2 z-50">
-        {toasts.map(
-          (t) =>
-            t.open && (
-              <div
-                key={t.id}
-                className="bg-primary text-white px-4 py-2 rounded shadow-lg"
-              >
-                {t.title && <strong>{t.title}</strong>}
-                {t.description && <p>{t.description}</p>}
-              </div>
-            )
-        )}
-      </div>
-
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-display font-semibold mb-12 text-center gradient-text">
+        <h2 className="text-3xl font-serif font-semibold mb-12 text-center gradient-text">
           Contactez-moi
         </h2>
 
         <div className="grid lg:grid-cols-2 gap-12">
           {/* Infos de contact */}
           <div className="space-y-8">
-            <h3 className="text-xl font-display font-medium text-foreground mb-6">
+            <h3 className="text-xl font-serif font-medium text-foreground mb-6">
               Restons en contact
             </h3>
             <p className="text-muted-foreground mb-8">
@@ -112,36 +151,22 @@ const ContactSection = () => {
             </div>
 
             <div className="flex gap-4 pt-4">
-              <Button
-                variant="outline"
-                size="sm"
-                className="btn-professional"
-                asChild
-              >
+              <Button variant="outline" size="sm" className="" asChild>
                 <a
                   href="https://www.linkedin.com/in/manasse-akpovi"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground "
                 >
-                  <FaLinkedin className="w-4 h-4 mr-2" />
                   LinkedIn
                 </a>
               </Button>
 
-              <Button
-                variant="outline"
-                size="sm"
-                className="btn-professional"
-                asChild
-              >
+              <Button variant="outline" size="sm" className="" asChild>
                 <a
                   href="https://github.com/AkmaDev"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-muted-foreground "
                 >
-                  <FaGithub className="w-4 h-4 mr-2" />
                   GitHub
                 </a>
               </Button>
@@ -161,6 +186,7 @@ const ContactSection = () => {
                     onChange={handleChange}
                     placeholder="Votre nom"
                     required
+                    disabled={isLoading}
                   />
                 </div>
 
@@ -174,6 +200,7 @@ const ContactSection = () => {
                     onChange={handleChange}
                     placeholder="votre@email.com"
                     required
+                    disabled={isLoading}
                   />
                 </div>
               </div>
@@ -187,6 +214,7 @@ const ContactSection = () => {
                   onChange={handleChange}
                   placeholder="Sujet de votre message"
                   required
+                  disabled={isLoading}
                 />
               </div>
 
@@ -200,12 +228,17 @@ const ContactSection = () => {
                   placeholder="Décrivez votre projet..."
                   rows={6}
                   required
+                  disabled={isLoading}
                 />
               </div>
 
-              <Button type="submit" className="w-full btn-professional">
+              <Button
+                type="submit"
+                className="w-full btn-professional"
+                disabled={isLoading}
+              >
                 <Send className="w-4 h-4 mr-2" />
-                Envoyer le message
+                {isLoading ? "Envoi en cours..." : "Envoyer le message"}
               </Button>
             </form>
           </div>

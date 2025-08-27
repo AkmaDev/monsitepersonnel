@@ -54,6 +54,7 @@ const PortfolioPage = () => {
       </Head>
 
       <Portfolio projects={allProjects} />
+      
     </>
   );
 };

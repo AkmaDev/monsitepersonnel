@@ -1,0 +1,10 @@
+project_id = "dhfogvkhkywaupeaxels"
+
+[functions.send-notification]
+verify_jwt = false
+
+[functions.handle-subscription]
+verify_jwt = false
+
+[functions.handle-contact]
+verify_jwt = false

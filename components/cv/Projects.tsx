@@ -19,7 +19,7 @@ const projects: Project[] = [
     type: "Projet de soutenance",
     technologies: ["React.js", "TypeScript", "Tailwind CSS", "Appwrite"],
     status: "Terminé",
-    link: "#",
+    link: "https://sinfi-project-soutenance-2024.vercel.app/",
   },
   {
     title: "Flipbook / Bible pour enfants en fon",
@@ -28,7 +28,7 @@ const projects: Project[] = [
     type: "Projet en cours",
     technologies: ["React.js", "Animation", "Design UX/UI"],
     status: "En développement",
-    link: "#",
+    link: "https://github.com/AkmaDev/BibleFon",
   },
 ];
 
@@ -79,12 +79,7 @@ const Projects: FC = () => {
               </div>
 
               <div className="flex gap-3">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 btn-professional"
-                  asChild
-                >
+                <Button variant="outline" size="sm" className="flex-1 " asChild>
                   <a
                     href={project.link}
                     target="_blank"

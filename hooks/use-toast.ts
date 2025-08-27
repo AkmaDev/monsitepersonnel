@@ -3,6 +3,7 @@ import * as React from "react";
 type ToastProps = {
   title?: React.ReactNode;
   description?: React.ReactNode;
+  variant?: "default" | "destructive";
 };
 
 type ToasterToast = ToastProps & {

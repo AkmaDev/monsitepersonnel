@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./index.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Inter, Playfair_Display } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({
@@ -29,6 +30,16 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           {children}
+          <Toaster
+            toastOptions={{
+              style: {
+                borderRadius: "var(--radius)",
+                padding: "1rem 1.5rem",
+                boxShadow: "var(--shadow-premium)",
+              },
+            }}
+            duration={4000}
+          />
         </ThemeProvider>
       </body>
     </html>
