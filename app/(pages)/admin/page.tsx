@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { supabase } from "@/lib/supabaseClient";
 import DOMPurify from "dompurify";
 import AdminAuth from "@/components/AdminAuth";
+import Head from "next/head";
 
 interface Contact {
   id: string;
@@ -323,6 +324,9 @@ const AdminPanel = () => {
     <div className="min-h-screen p-6 bg-background">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
+        <Head>
+          <meta name="robots" content="noindex, nofollow" />
+        </Head>
         <div className="text-center relative">
           <Button
             variant="outline"
