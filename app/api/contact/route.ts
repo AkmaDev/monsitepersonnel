@@ -1,22 +1,3 @@
-// app/api/contact/route.ts ou pages/api/contact.ts
-// import { NextRequest, NextResponse } from "next/server";
-// import { Resend } from "resend";
-// import { createClient } from "@supabase/supabase-js";
-// import { z } from "zod";
-// import crypto from "node:crypto";
-
-// const {
-//   RESEND_API_KEY,
-//   SUPABASE_URL,
-//   SUPABASE_SERVICE_ROLE_KEY,
-//   CONTACT_FROM,
-//   CONTACT_ADMIN_EMAIL,
-//   ALLOWED_ORIGINS,
-// } = process.env as Record<string, string>;
-
-// const resend = new Resend(RESEND_API_KEY);
-// const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
-
 import { NextRequest, NextResponse } from "next/server";
 import { Resend } from "resend";
 
