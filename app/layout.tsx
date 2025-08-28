@@ -15,9 +15,51 @@ export const metadata: Metadata = {
     "Manassé AKPOVI | Développeur Frontend React.js & TypeScript - Portfolio & Projets",
   description:
     "Découvrez le portfolio de Manassé AKPOVI, développeur frontend React.js & TypeScript. Projets web modernes, solutions créatives et impact social en Afrique.",
-  icons: {
-    icon: "/favicon.png",
-  },
+  icons: [
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "16x16",
+      url: "/favicons/favicon-16x16.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "32x32",
+      url: "/favicons/favicon-32x32.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "48x48",
+      url: "/favicons/favicon-48x48.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "64x64",
+      url: "/favicons/favicon-64x64.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "96x96",
+      url: "/favicons/favicon-96x96.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "128x128",
+      url: "/favicons/favicon-128x128.png",
+    },
+    {
+      rel: "icon",
+      type: "image/png",
+      sizes: "256x256",
+      url: "/favicons/favicon-256x256.png",
+    },
+    { rel: "shortcut icon", url: "/favicon.png" },
+  ],
   openGraph: {
     title: "Manassé AKPOVI | Développeur Frontend React.js & TypeScript",
     description:
