@@ -112,7 +112,7 @@ const Home: FC = () => {
           <div className="text-center mb-12">
             <div className="relative inline-block mb-6">
               <Image
-                src="/photmoi.png"
+                src="/photoMoi.png"
                 alt="Profile"
                 width={128}
                 height={128}

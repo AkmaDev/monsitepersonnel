@@ -14,7 +14,7 @@ const ProfileHeader: FC = () => {
           {/* Photo de profil */}
           <div className="relative inline-block mb-6">
             <Image
-              src="/photmoi.png"
+              src="/photoMoi.png"
               alt="Manassé AKPOVI - Développeur Frontend"
               width={128}
               height={128}
