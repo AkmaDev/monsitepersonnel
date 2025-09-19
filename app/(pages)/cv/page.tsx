@@ -1,10 +1,12 @@
 "use client";
-import About from "@/components/cv/About";
+import { AboutSection } from "@/components/cv/About";
 import ContactSection from "@/components/cv/ContactSection";
-import ProfessionalExperience from "@/components/cv/ProfessionalExperience";
-import ProfileHeader from "@/components/cv/ProfileHeader";
-import Projects from "@/components/cv/Projects";
-import Skills from "@/components/cv/Skills";
+import { ExperienceSection } from "@/components/cv/ProfessionalExperience";
+import { HeroSection } from "@/components/cv/ProfileHeader";
+import { ProjectsSection } from "@/components/cv/Projects";
+
+import { SkillsSection } from "@/components/cv/Skills";
+
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 
@@ -25,11 +27,11 @@ const Page = () => {
         </Button>
       </div>
 
-      <ProfileHeader />
-      <About />
-      <Skills />
-      <ProfessionalExperience />
-      <Projects />
+      <HeroSection />
+      <AboutSection />
+      <SkillsSection />
+      <ExperienceSection />
+      <ProjectsSection />
       <ContactSection />
     </div>
   );

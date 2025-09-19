@@ -1,60 +1,59 @@
-import { FC } from "react";
+"use client";
+
+import { siteConfig } from "@/types/site";
+import { motion } from "framer-motion";
 import { Calendar, MapPin, Building } from "lucide-react";
 
-interface ExperienceItem {
-  company: string;
-  position: string;
-  location: string;
-  period: string;
-  achievements: string[];
-}
+export function ExperienceSection() {
+  // Liste des mots/expressions à mettre en valeur
+  const highlights = ["réduisant de 20%", "engagement utilisateur"];
 
-const experiences: ExperienceItem[] = [
-  {
-    company: "NerdX Digital",
-    position: "ReactJS Developer Intern",
-    location: "Bénin",
-    period: "03/2024 – 09/2024",
-    achievements: [
-      "Développement d'interfaces frontend responsives à partir de designs UI/UX",
-      "Conversion de maquettes Figma en code React.js propre et maintenable",
-      "Utilisation de Tailwind CSS pour des designs modernes",
-    ],
-  },
-  {
-    company: "JILMONDE CONSULTING",
-    position: "Stagiaire Développeur Java",
-    location: "Bénin",
-    period: "04/2023 – 06/2023",
-    achievements: [
-      "Développement et maintenance de tests unitaires avec JUnit et JaCoCo",
-      "Application des principes TDD pour renforcer la robustesse du code",
-    ],
-  },
-  {
-    company: "AKS PICTURES",
-    position: "Stagiaire Développeur Python",
-    location: "Bénin",
-    period: "07/2022 – 08/2022",
-    achievements: [
-      "Développement et optimisation de scripts de narration interactive (Python/Ren'Py)",
-      "Optimisation des assets du jeu avec Photoshop",
-    ],
-  },
-];
+  // Fonction de highlight
+  const renderHighlightedAchievement = (text: string) => {
+    const regex = new RegExp(`(${highlights.join("|")})`, "gi"); // "gi" → ignoreCase
+    const parts = text.split(regex);
 
-const ProfessionalExperience: FC = () => {
+    return parts.map((part, idx) =>
+      highlights.some((h) => part.toLowerCase().includes(h.toLowerCase())) ? (
+        <span key={idx} className="text-primary font-medium">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
-    <section className="section-spacing">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-display font-semibold mb-12 text-center gradient-text">
+    <motion.section
+      className="section-spacing"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="max-w-4xl mx-auto px-4">
+        <motion.h2
+          className="text-3xl font-display font-semibold mb-12 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           Expérience Professionnelle
-        </h2>
+        </motion.h2>
 
         <div className="space-y-8">
-          {experiences.map((exp, index) => (
-            <div key={index} className="card-premium">
-              <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
+          {siteConfig.experiences.map((exp, index) => (
+            <motion.article
+              key={index}
+              className="card-premium"
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+            >
+              <header className="flex flex-col lg:flex-row lg:justify-between lg:items-start mb-4">
                 <div>
                   <h3 className="text-xl font-display font-medium text-foreground mb-2">
                     {exp.position}
@@ -68,32 +67,33 @@ const ProfessionalExperience: FC = () => {
                 <div className="flex flex-col lg:items-end gap-1 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
-                    <span>{exp.period}</span>
+                    <time>{exp.period}</time>
                   </div>
                   <div className="flex items-center gap-2">
                     <MapPin className="w-4 h-4" />
                     <span>{exp.location}</span>
                   </div>
                 </div>
-              </div>
+              </header>
 
-              <ul className="space-y-2">
+              <ul className="space-y-2" role="list">
                 {exp.achievements.map((achievement, achIndex) => (
                   <li
                     key={achIndex}
                     className="flex items-start gap-3 text-muted-foreground"
                   >
-                    <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-                    <span>{achievement}</span>
+                    <div
+                      className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"
+                      aria-hidden="true"
+                    ></div>
+                    <span>{renderHighlightedAchievement(achievement)}</span>
                   </li>
                 ))}
               </ul>
-            </div>
+            </motion.article>
           ))}
         </div>
       </div>
-    </section>
+    </motion.section>
   );
-};
-
-export default ProfessionalExperience;
+}

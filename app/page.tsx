@@ -128,10 +128,10 @@ const Home: FC = () => {
             {/* Trois verbes d'action avec séparateurs */}
             <div className="flex items-center justify-center gap-3 flex-wrap mb-4">
               <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
-                Développeur frontend
+                Product Builder
               </span>
               <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
-                Créateur de contenu
+                Developpeur frontend
               </span>
               <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
                 Innovation sociale

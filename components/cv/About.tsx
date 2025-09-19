@@ -1,26 +1,61 @@
-import React from "react";
+"use client";
 
-const AboutSection: React.FC = () => {
+import { siteConfig } from "@/types/site";
+import { motion } from "framer-motion";
+import { JSX } from "react";
+
+export function AboutSection(): JSX.Element {
+  const text = siteConfig.about.description;
+
+  // Mots à mettre en primary
+  const highlights = [
+    "Product Building",
+    "prototypage rapide",
+    "intégration API/IA",
+    "conception de MVP orientés impact business",
+  ];
+
+  // Fonction pour transformer le texte en JSX
+  const renderHighlightedText = (text: string) => {
+    const regex = new RegExp(`(${highlights.join("|")})`, "g");
+
+    const parts = text.split(regex); // découpe en incluant les mots
+
+    return parts.map((part, idx) =>
+      highlights.includes(part) ? (
+        <span key={idx} className="text-primary font-medium">
+          {part}
+        </span>
+      ) : (
+        part
+      )
+    );
+  };
+
   return (
-    <section className="section-spacing">
-      <div className="max-w-4xl mx-auto">
-        <div className="card-premium">
-          <h2 className="text-3xl font-display font-semibold mb-6 gradient-text">
-            Profil Professionnel
+    <motion.section
+      className="section-spacing"
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.8 }}
+    >
+      <div className="max-w-4xl mx-auto px-4">
+        <motion.article
+          className="card-premium"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          <h2 className="text-3xl font-display font-semibold mb-6 text-primary">
+            {siteConfig.about.title}
           </h2>
           <p className="text-lg leading-relaxed text-muted-foreground">
-            Développeur frontend passionné, expérimenté en{" "}
-            <span className="text-primary font-medium">React.js</span> et{" "}
-            <span className="text-primary font-medium">TypeScript</span>, motivé
-            à créer des solutions innovantes et performantes. Mon objectif est
-            de mettre en avant mes compétences techniques et projets phares de
-            manière professionnelle et interactive, en contribuant à des projets
-            web modernes qui font la différence.
+            {renderHighlightedText(text)}
           </p>
-        </div>
+        </motion.article>
       </div>
-    </section>
+    </motion.section>
   );
-};
-
-export default AboutSection;
+}
