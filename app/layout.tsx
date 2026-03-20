@@ -11,10 +11,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title:
-    "Manassé AKPOVI | Développeur Frontend React.js & TypeScript - Portfolio & Projets",
+  title: "Manassé AKPOVI | Product Builder — Numérique Inclusif & Impact Afrique",
   description:
-    "Découvrez le portfolio de Manassé AKPOVI, développeur frontend React.js & TypeScript. Projets web modernes, solutions créatives et impact social en Afrique.",
+    "Je construis des produits numériques pour les communautés que la technologie oublie. À l'origine de BibleFon — histoires bibliques en langue fon pour les communautés orales du Bénin.",
   icons: [
     {
       rel: "icon",
@@ -61,9 +60,9 @@ export const metadata: Metadata = {
     { rel: "shortcut icon", url: "/favicon.png" },
   ],
   openGraph: {
-    title: "Manassé AKPOVI | Développeur Frontend React.js & TypeScript",
+    title: "Manassé AKPOVI | Product Builder — Numérique Inclusif & Impact Afrique",
     description:
-      "Portfolio et projets innovants de Manassé AKPOVI. Développement frontend, design interactif et impact social.",
+      "Je construis des produits numériques pour les communautés que la technologie oublie. À l'origine de BibleFon — histoires bibliques en langue fon pour les communautés orales du Bénin.",
     url: "https://manasseakpovi.com",
     type: "website",
     images: [
@@ -71,15 +70,15 @@ export const metadata: Metadata = {
         url: "/og-homepage.png",
         width: 1200,
         height: 630,
-        alt: "Manassé AKPOVI - Portfolio Frontend",
+        alt: "Manassé AKPOVI — Product Builder",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Manassé AKPOVI | Développeur Frontend React.js & TypeScript",
+    title: "Manassé AKPOVI | Product Builder — Numérique Inclusif & Impact Afrique",
     description:
-      "Portfolio et projets web de Manassé AKPOVI. Création frontend innovante et solutions digitales impactantes.",
+      "Je construis des produits numériques pour les communautés que la technologie oublie. À l'origine de BibleFon.",
     images: ["/og-homepage.png"],
   },
   robots: "index, follow",

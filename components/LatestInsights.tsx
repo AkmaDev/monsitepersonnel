@@ -2,6 +2,17 @@ import ArticleCard from "./ArticleCard";
 
 const LatestInsights = () => {
   const articles = [
+    {
+      title: "Ce que BibleFon m'a appris sur ce que « Audio First » veut vraiment dire",
+      excerpt:
+        "Il ne s'agit pas d'ajouter un bouton play. Il s'agit de concevoir pour des gens dont la langue, la culture et les pratiques sont fondamentalement orales — et pour qui l'écrit n'est pas une option, c'est une barrière.",
+      category: "Product Building",
+      readTime: "8 min",
+      date: "20 mars 2026",
+      featured: true,
+      image: "/article-biblefon.jpg",
+      slug: "audio-first-biblefon",
+    },
     // {
     //   title: "L'écosystème fintech nigérian : Entre innovation et régulation",
     //   excerpt:

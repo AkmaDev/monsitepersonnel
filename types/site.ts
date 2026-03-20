@@ -65,9 +65,9 @@ export interface SiteConfig {
 // -------- siteConfig (extrait complet ci-dessous) --------
 export const siteConfig: SiteConfig = {
   name: "Manassé AKPOVI",
-  title: "Manassé AKPOVI – Alternance Product Builder / Product Management",
+  title: "Manassé AKPOVI | Product Builder — Numérique Inclusif & Impact Afrique",
   description:
-    "Étudiant en Ingénierie Web à l’ESGI, passionné par le Product Building : transformer des idées en produits fonctionnels à forte valeur utilisateur. Expérimenté en développement web, prototypage rapide, intégration API/IA et gestion de MVP orientée business impact.",
+    "Créateur de produits numériques à la croisée de la culture africaine et du design inclusif. À l’origine de BibleFon — histoires bibliques illustrées en langue fon pour les communautés orales du Bénin. Expérimenté en product building, intégration IA, et conception de solutions pour des publics que les outils numériques ignorent habituellement.",
   email: "manews193@gmail.com",
   phone: "+33 7 43 68 02 30",
   location: "Paris, France",
@@ -76,9 +76,9 @@ export const siteConfig: SiteConfig = {
   hero: {
     variant: "with-image",
     title: "Manassé AKPOVI",
-    subtitle: "Alternance Product Builder / Product Management",
+    subtitle: "Product Builder · Numérique Inclusif · Afrique & Impact",
     description:
-      "Étudiant en Ingénierie Web à l’ESGI, passionné par le Product Building : transformer des idées en produits fonctionnels à forte valeur utilisateur. Expérimenté en développement web, prototypage rapide, intégration API/IA et gestion de MVP orientée business impact.",
+      "Créateur de produits numériques à la croisée de la culture africaine et du design inclusif. À l’origine de BibleFon — histoires bibliques illustrées en langue fon pour les communautés orales du Bénin. Expérimenté en product building, intégration IA, et conception de solutions pour des publics que les outils numériques ignorent habituellement.",
     ctaText: "Découvrir mes projets",
     ctaUrl: "#projects",
   },
@@ -125,6 +125,17 @@ export const siteConfig: SiteConfig = {
   ],
 
 projects: [
+  {
+    title: "BibleFon — Histoires Bibliques en Langue Fon",
+    description:
+      "Plateforme de livres animés audio en langue fon. Illustrations IA, synthèse vocale (Meta MMS-TTS-Fon), architecture PWA offline-first. Conçu pour les familles béninoises non-lettrées — une grand-mère peut écouter David et Goliath dans sa langue maternelle sans savoir lire.",
+    type: "Autre",
+    technologies: ["Next.js", "React", "TypeScript", "HuggingFace", "TailwindCSS", "PWA"],
+    status: "Terminé",
+    link: "https://biblefon.org",
+    github: undefined,
+    year: "2026",
+  },
   {
     title: "Juriste Vert – Automatisation prise de rendez-vous juridiques",
     description:
@@ -191,6 +202,8 @@ projects: [
 
   skills: {
     technical: [
+      "Numérique inclusif / Audio First",
+      "Conception pour communautés orales",
       "Product Discovery",
       "MVP",
       "Prototypage rapide",
@@ -224,7 +237,8 @@ projects: [
   about: {
     title: "Profil Professionnel",
     description:
-  "Étudiant en Ingénierie Web, passionné par le Product Building : transformer des idées en produits fonctionnels à forte valeur utilisateur. Expérimenté en développement web, prototypage rapide, intégration API/IA et conception de MVP orientés impact business. Mon objectif est de rejoindre une équipe ambitieuse pour concevoir, tester et lancer des produits digitaux tout en renforçant mes compétences en Product Management, UX Design et Growth.", },
+      "Mon approche du numérique part d'une question simple : pour qui ces outils sont-ils réellement conçus ? Avec BibleFon, j'ai répondu à cette question concrètement — en construisant un livre animé audio pour des familles qui communiquent oralement depuis des générations, dans une langue que le numérique ignore presque entièrement. Je recherche des équipes qui partagent cette conviction : que les meilleurs produits numériques sont ceux qui élargissent le cercle de qui peut en bénéficier.",
+  },
 
   analytics: {
     enabled: true,

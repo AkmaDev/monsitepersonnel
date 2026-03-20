@@ -18,9 +18,9 @@ interface LinkItem {
 
 const links: LinkItem[] = [
   {
-    title: "Blog Strategic Insights Africa",
-    description: "Analyses approfondies sur l'Afrique moderne",
-    url: "/comingsoon",
+    title: "BibleFon — Histoires bibliques en langue fon",
+    description: "Mon projet principal : livres audio animés pour les communautés orales du Bénin",
+    url: "https://biblefon.org",
     icon: ExternalLink,
     primary: true,
   },
@@ -131,10 +131,10 @@ const Home: FC = () => {
                 Product Builder
               </span>
               <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
-                Developpeur frontend
+                Numérique Inclusif
               </span>
               <span className="px-4 py-1 rounded-full bg-muted text-sm font-medium">
-                Innovation sociale
+                Afrique & Impact
               </span>
             </div>
 
@@ -144,9 +144,8 @@ const Home: FC = () => {
             </p> */}
 
             <p className="text-muted-foreground leading-relaxed text-center max-w-md mx-auto">
-              J&apos;allie technologie et créativité pour transformer des idées
-              en solutions digitales impactantes. Passionné par l&apos;Afrique
-              moderne et les systèmes qui façonnent l&apos;avenir.
+              Je construis des produits numériques pour les communautés que la
+              technologie oublie. BibleFon en est la première démonstration.
             </p>
           </div>
 
