@@ -165,12 +165,12 @@ projects: [
   {
     title: "Visualiseur PDF – Flipbook animé",
     description:
-      "Transformation d’un PDF statique en expérience interactive (Next.js, TailwindCSS, iLovePDF API, JSZip, IA) pour augmenter l’engagement utilisateur.",
+      "Visualiseur de livres animés avec effet page-flip 3D. Architecture CSS 3D pure — après avoir éliminé Turn.js/jQuery (1200+ lignes remplacées par des animations natives). Double-page spread, transitions fluides, audio synchronisé. Ce projet est le socle technique sur lequel BibleFon v2 a été reconstruit.",
     type: "Autre",
-    technologies: ["Next.js", "TailwindCSS", "iLovePDF API", "JSZip", "Lovable AI"],
+    technologies: ["Next.js", "React", "TypeScript", "TailwindCSS", "CSS 3D", "Web Audio API"],
     status: "Terminé",
-    link: "https://premiumflipbook.vercel.app/", // ✅ lien live
-    github: "https://github.com/AkmaDev/premiumflipbook", // ✅ code
+    link: "https://biblefon.vercel.app/",
+    github: "https://github.com/AkmaDev/premiumflipbook",
     year: "2024",
   },
 ],

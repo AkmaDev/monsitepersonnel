@@ -35,16 +35,6 @@ const LatestInsights = () => {
     //   image: "/article-telecoms.jpg",
     //   slug: "kenya-strategie-numerique-safaricom-concurrence",
     // },
-    {
-      title: "Rwanda : Les leçons d'une transformation digitale réussie",
-      excerpt:
-        "Décryptage des politiques publiques qui ont fait du Rwanda un leader en matière d'innovation technologique.",
-      category: "Gouvernance",
-      readTime: "10 min",
-      date: "30 oct 2024",
-      image: "/article-governance.jpg",
-      slug: "rwanda-transformation-digitale-reussie",
-    },
     // {
     //   title: "Le défi logistique en Afrique de l'Ouest : l'approche de Kobo360",
     //   excerpt:

@@ -1,6 +1,7 @@
 "use client";
 import { AboutSection } from "@/components/cv/About";
 import ContactSection from "@/components/cv/ContactSection";
+import { EducationSection } from "@/components/cv/Education";
 import { ExperienceSection } from "@/components/cv/ProfessionalExperience";
 import { HeroSection } from "@/components/cv/ProfileHeader";
 import { ProjectsSection } from "@/components/cv/Projects";
@@ -31,6 +32,7 @@ const Page = () => {
       <AboutSection />
       <SkillsSection />
       <ExperienceSection />
+      <EducationSection />
       <ProjectsSection />
       <ContactSection />
     </div>

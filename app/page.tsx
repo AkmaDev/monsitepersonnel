@@ -19,7 +19,7 @@ interface LinkItem {
 const links: LinkItem[] = [
   {
     title: "BibleFon — Histoires bibliques en langue fon",
-    description: "Mon projet principal : livres audio animés pour les communautés orales du Bénin",
+    description: "Livres audio animés en langue fon — pour les communautés orales du Bénin",
     url: "https://biblefon.org",
     icon: ExternalLink,
     primary: true,
@@ -209,7 +209,7 @@ const Home: FC = () => {
               </a>
             </div>
             <p className="text-xs text-muted-foreground">
-              © 2024 Manassé AKPOVI. Tous droits réservés.
+              © 2026 Manassé AKPOVI. Tous droits réservés.
             </p>
           </div>
         </div>

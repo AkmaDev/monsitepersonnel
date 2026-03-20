@@ -4,9 +4,9 @@ import LatestInsights from "@/components/LatestInsights";
 import Head from "next/head";
 
 const BlogPage = () => {
-  const pageTitle = "Blog | Strategic Insights Africa";
+  const pageTitle = "Notes — Manassé AKPOVI";
   const pageDescription =
-    "Décryptages stratégiques hebdomadaires sur les entreprises, technologies et politiques publiques qui transforment l'Afrique.";
+    "Ce que je construis, ce que j'apprends. Notes sur le product building, le numérique inclusif et la langue fon.";
 
   return (
     <>
