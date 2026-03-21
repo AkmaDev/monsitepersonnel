@@ -1,0 +1,25 @@
+# Manassé AKPOVI
+
+> Product Builder · Numérique Inclusif · Afrique & Impact
+> Créateur de BibleFon — histoires bibliques en langue fon pour les communautés orales du Bénin
+
+## Pages principales
+
+- [Accueil](https://manasseakpovi.com): Hub d'identité — liens vers BibleFon, CV, portfolio design, GitHub, LinkedIn, Medium
+- [CV & Portfolio](https://manasseakpovi.com/cv): Parcours, expériences (NerdX Digital, JILMONDE Consulting), formations (ESGI Paris, IFRI Bénin), projets, compétences
+- [Article : Audio First](https://manasseakpovi.com/article/audio-first-biblefon): Définition d'Audio First, 4 décisions de conception concrètes pour BibleFon, références ACM CHI, Microsoft Research, UNESCO
+- [Blog — Notes](https://manasseakpovi.com/blog): Articles sur le product building, le numérique inclusif et les langues locales africaines
+
+## Projet phare
+
+- [BibleFon](https://biblefon.org): Plateforme de livres animés audio en langue fon pour les communautés orales du Bénin. Synthèse vocale Meta MMS-TTS-Fon, illustrations IA avec personnages africains, PWA offline-first. Histoires disponibles : David et Goliath.
+
+## Identité
+
+Manassé A. AKPOVI est un développeur web béninois, étudiant en ingénierie web à l'ESGI Paris, spécialisé dans la conception de produits numériques inclusifs pour les communautés africaines à tradition orale. Il conçoit des interfaces audio-first pour les 500 millions d'adultes en Afrique subsaharienne que le numérique habituel ignore.
+
+## Contact
+
+- Email: manasse.akpovi@manasseakpovi.com
+- GitHub: https://github.com/AkmaDev
+- LinkedIn: https://www.linkedin.com/in/manasse-akpovi
