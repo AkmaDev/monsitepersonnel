@@ -3,7 +3,7 @@ import { FC } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, Mail } from "lucide-react";
+import { ExternalLink, Mail, BookOpen } from "lucide-react";
 import { SiMedium } from "react-icons/si";
 import { FaLinkedin, FaGithub } from "react-icons/fa";
 import Link from "next/link";
@@ -29,6 +29,12 @@ const links: LinkItem[] = [
     description: "Mon parcours et mes réalisations",
     url: "/cv",
     icon: ExternalLink,
+  },
+  {
+    title: "Notes & Blog",
+    description: "Ce que je construis, ce que j'apprends",
+    url: "/blog",
+    icon: BookOpen,
   },
   {
     title: "Projets Personnels",
