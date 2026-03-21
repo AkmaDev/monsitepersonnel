@@ -93,25 +93,6 @@ const Home: FC = () => {
         <meta name="twitter:image" content="/og-homepage.png" />
       </Head>
 
-      {/* <div className="fixed top-4 right-4 z-50 flex gap-2">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => console.log("Contact cliqué")}
-          className="btn-professional"
-        >
-          Contact
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => console.log("Admin cliqué")}
-          className="btn-professional"
-        >
-          Admin
-        </Button>
-      </div> */}
-
       <div className="min-h-screen bg-background flex items-center justify-center p-6">
         <div className="w-full max-w-lg mx-auto">
           {/* Profile Section */}
@@ -164,7 +145,7 @@ const Home: FC = () => {
               const content = (
                 <Button
                   variant={link.primary ? "default" : "secondary"}
-                  className="w-full h-auto p-6 justify-start text-left group-hover:scale-[1.02] transition-all duration-200 shadow-premium"
+                  className="w-full h-auto p-6 justify-start text-left group-hover:scale-[1.02] transition-all duration-200 shadow-premium whitespace-normal"
                 >
                   <div className="flex items-center w-full">
                     <div className="flex-shrink-0 mr-4">
@@ -175,7 +156,7 @@ const Home: FC = () => {
                         {link.title}
                         <ExternalLink className="h-4 w-4 opacity-60" />
                       </div>
-                      <div className="text-sm opacity-80 leading-snug">
+                      <div className="text-sm opacity-80 leading-snug break-words">
                         {link.description}
                       </div>
                     </div>
