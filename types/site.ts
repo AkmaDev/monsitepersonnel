@@ -126,6 +126,22 @@ export const siteConfig: SiteConfig = {
 
 projects: [
   {
+    title: "Pipeline IA — Prospection B2B via BODACC",
+    description:
+      "Détecte chaque matin les restaurants nouvellement ouverts dans le registre officiel français (BODACC), les score sur 15 critères, puis génère une séquence de 5 emails personnalisés avec Claude. Dashboard Streamlit pour envoyer et suivre les leads. Règles strictes anti-hallucination : zéro stat inventée, zéro nom fictif.",
+    type: "Projet de soutenance",
+    technologies: ["Python", "Claude API", "Streamlit", "BODACC", "Exa", "Notion API"],
+    status: "En développement",
+    link: "https://github.com/AkmaDev/prospection_pipeline",
+    github: "https://github.com/AkmaDev/prospection_pipeline",
+    features: [
+      "Détection de signaux BODACC en temps réel",
+      "Scoring sur 15 critères + séquence 5 emails",
+      "Zéro donnée inventée — règles strictes anti-hallucination",
+    ],
+    year: "2025",
+  },
+  {
     title: "BibleFon — Histoires Bibliques en Langue Fon",
     description:
       "Plateforme de livres animés audio en langue fon. Illustrations IA, synthèse vocale (Meta MMS-TTS-Fon), architecture PWA offline-first. Conçu pour les familles béninoises non-lettrées — une grand-mère peut écouter David et Goliath dans sa langue maternelle sans savoir lire.",
