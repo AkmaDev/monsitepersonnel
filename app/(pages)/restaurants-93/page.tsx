@@ -156,25 +156,15 @@ export default function Restaurants93Page() {
           <h2 className="font-display text-xl font-semibold text-foreground">
             Démo en ligne
           </h2>
-          <div className="rounded-xl border border-dashed border-border bg-muted/30 p-8 text-center space-y-3">
-            <p className="text-muted-foreground text-sm">
-              Le chatbot est en cours de déploiement sur serveur.
-            </p>
-            <p className="text-muted-foreground text-xs">
-              Le widget interactif sera disponible ici prochainement.
-            </p>
-            {/*
-              Une fois Flowise déployé sur Railway/Render, remplacer ce bloc par :
-
-              <script type="module">
-                import Chatbot from "https://cdn.jsdelivr.net/npm/flowise-embed/dist/web.js"
-                Chatbot.init({
-                  chatflowid: "TON_CHATFLOW_ID",
-                  apiHost: "https://ton-flowise.railway.app",
-                  theme: { button: { backgroundColor: "#1a1a2e" }, chatWindow: { title: "Restaurants 93" } }
-                })
-              </script>
-            */}
+          <p className="text-sm text-muted-foreground">
+            Posez une question sur les restaurants de Seine-Saint-Denis (93) — numéros de téléphone, types de cuisine, adresses.
+          </p>
+          <div className="rounded-xl overflow-hidden border border-border">
+            <iframe
+              src="https://flowise-production-d16d.up.railway.app/chatbot/16d96990-655b-48ef-bb95-9c2977fd8819"
+              style={{ width: "100%", height: "600px", border: "none" }}
+              title="Chatbot Restaurants 93"
+            />
           </div>
         </section>
 
