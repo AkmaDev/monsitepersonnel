@@ -126,6 +126,22 @@ export const siteConfig: SiteConfig = {
 
 projects: [
   {
+    title: "RADAR — Moteur de qualification B2B",
+    description:
+      "Moteur de scoring qui transforme 29 success stories publiques en machine à prospecter. Score Profil (qui est ce lead ?) + Score Signal (est-ce le bon moment ?). Zéro IA générative — 100% règles métier. Simulateur interactif embarqué.",
+    type: "Projet de soutenance",
+    technologies: ["JavaScript", "HTML/CSS", "SIRENE (INSEE)", "Google Maps", "Scoring multicritère", "Pattern matching"],
+    status: "Terminé",
+    link: "https://www.manasseakpovi.com/radar",
+    github: undefined,
+    features: [
+      "29 success stories analysées — verbatims clients → signaux détectables",
+      "2 scores distincts : Profil (fit) + Signal (timing)",
+      "Cartographie concurrentielle : 1 client → 10–30 prospects dans son périmètre",
+    ],
+    year: "2026",
+  },
+  {
     title: "Pipeline IA — Prospection B2B via BODACC",
     description:
       "Détecte chaque matin les restaurants nouvellement ouverts dans le registre officiel français (BODACC), les score sur 15 critères, puis génère une séquence de 5 emails personnalisés avec Claude. Dashboard Streamlit pour envoyer et suivre les leads. Règles strictes anti-hallucination : zéro stat inventée, zéro nom fictif.",
