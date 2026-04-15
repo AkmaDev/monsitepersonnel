@@ -1,0 +1,2246 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RADAR — Simulateur de qualification lead B2B</title>
+  <meta name="description" content="Construisez un profil restaurant et voyez comment le moteur de qualification RADAR score, matche une success story et génère le message commercial en temps réel.">
+  <meta property="og:title" content="RADAR — Simulateur de qualification lead B2B">
+  <meta property="og:description" content="Moteur de scoring B2B automatisé pour restaurants. Score Profil + Score Signal + génération de message. Zéro IA — 100 % règles métier.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blue:        #2563EB;
+      --blue-hover:  #1D4ED8;
+      --blue-light:  #EFF6FF;
+      --blue-mid:    #BFDBFE;
+      --green:       #16A34A;
+      --green-light: #F0FDF4;
+      --amber:       #D97706;
+      --amber-light: #FFFBEB;
+      --red:         #DC2626;
+      --red-light:   #FEF2F2;
+      --gray-50:  #F9FAFB;
+      --gray-100: #F3F4F6;
+      --gray-200: #E5E7EB;
+      --gray-300: #D1D5DB;
+      --gray-400: #9CA3AF;
+      --gray-500: #6B7280;
+      --gray-600: #4B5563;
+      --gray-700: #374151;
+      --gray-800: #1F2937;
+      --gray-900: #111827;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+      --shadow:    0 1px 3px rgba(0,0,0,0.10), 0 1px 2px rgba(0,0,0,0.06);
+      --radius:    8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--gray-900);
+      background: var(--gray-50);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ─────────────────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: white;
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .logo {
+      font-size: 17px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--gray-900);
+    }
+    .logo-dot { color: var(--blue); }
+
+    .badge-project {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-500);
+      background: var(--gray-100);
+      border: 1px solid var(--gray-200);
+      border-radius: 20px;
+      padding: 2px 10px;
+      white-space: nowrap;
+    }
+
+    .header-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+      line-height: 1.4;
+    }
+
+    /* ── Main layout ─────────────────────────────────────────────── */
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 360px 1fr;
+      gap: 20px;
+      padding: 24px;
+      max-width: 1320px;
+      width: 100%;
+      margin: 0 auto;
+      align-items: start;
+    }
+
+    /* ── Left panel ──────────────────────────────────────────────── */
+    .panel-left {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel-section {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .panel-section:last-child { border-bottom: none; }
+
+    .section-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      margin-bottom: 10px;
+    }
+
+    /* Scenario buttons */
+    .scenario-stack { display: flex; flex-direction: column; gap: 6px; }
+
+    .btn-scenario {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 9px 12px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--gray-700);
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+    }
+    .btn-scenario:hover        { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+    .btn-scenario.is-active    { border-color: var(--blue); background: var(--blue-light); color: var(--blue); }
+
+    .sc-badge {
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .sc-prioritaire { background: var(--green-light);  color: var(--green); }
+    .sc-chaud       { background: var(--amber-light);  color: var(--amber); }
+    .sc-tiede       { background: var(--blue-light);   color: var(--blue);  }
+
+    /* Inputs */
+    .form-stack { display: flex; flex-direction: column; gap: 10px; }
+
+    .field { display: flex; flex-direction: column; gap: 3px; }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-500);
+    }
+
+    .field input,
+    .field select {
+      font-family: inherit;
+      font-size: 13px;
+      color: var(--gray-900);
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 7px 10px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+    }
+
+    /* Toggles */
+    .toggle-stack { display: flex; flex-direction: column; gap: 4px; }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.12s;
+    }
+    .toggle-item:hover              { background: var(--gray-50); }
+    .toggle-item.is-on              { background: var(--blue-light); }
+    .toggle-item.is-malus.is-on     { background: var(--red-light); }
+
+    .toggle-text { display: flex; flex-direction: column; gap: 1px; }
+
+    .toggle-name {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-700);
+      transition: color 0.12s;
+    }
+    .toggle-item.is-on .toggle-name         { color: var(--blue); }
+    .toggle-item.is-malus.is-on .toggle-name { color: var(--red); }
+
+    .toggle-pts {
+      font-size: 10px;
+      color: var(--gray-400);
+    }
+
+    /* Mutual-exclusion hint */
+    .toggle-hint {
+      font-size: 10px;
+      color: var(--amber);
+      font-style: italic;
+      margin-top: 1px;
+    }
+
+    /* iOS-style switch */
+    .switch {
+      position: relative;
+      width: 36px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+    .switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+
+    .switch-track {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: var(--gray-200);
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+    .switch-track::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    .switch input:checked + .switch-track            { background: var(--blue); }
+    .switch input:checked + .switch-track::after     { transform: translateX(16px); }
+    .toggle-item.is-malus .switch input:checked + .switch-track { background: var(--red); }
+
+    /* ── Right panel ─────────────────────────────────────────────── */
+    .panel-right { display: flex; flex-direction: column; gap: 16px; }
+
+    .card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--gray-100);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--gray-400);
+    }
+    .card-body { padding: 16px; }
+
+    /* ── Score card ──────────────────────────────────────────────── */
+    .score-layout {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .score-num-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-shrink: 0;
+      min-width: 72px;
+    }
+    .score-num {
+      font-size: 54px;
+      font-weight: 700;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: var(--gray-900);
+    }
+    .score-cap {
+      font-size: 11px;
+      color: var(--gray-400);
+      margin-top: 3px;
+    }
+
+    .score-bars { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .bar-label {
+      font-size: 11px;
+      color: var(--gray-500);
+      width: 48px;
+      flex-shrink: 0;
+    }
+    .bar-val {
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      color: var(--gray-700);
+      width: 28px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .progress {
+      flex: 1;
+      height: 6px;
+      background: var(--gray-100);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+    }
+    .fill-blue  { background: var(--blue); }
+    .fill-green { background: var(--green); }
+
+    /* Label badge */
+    .label-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      transition: background 0.3s, color 0.3s;
+    }
+    .badge-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .lbl-prioritaire { background: var(--green-light);  color: var(--green); }
+    .lbl-chaud       { background: var(--amber-light);  color: var(--amber); }
+    .lbl-tiede       { background: var(--blue-light);   color: var(--blue);  }
+    .lbl-froid       { background: var(--gray-100);     color: var(--gray-500); }
+    .lbl-exclu       { background: var(--red-light);    color: var(--red);   }
+
+    /* ── Score detail accordion ──────────────────────────────────── */
+    .acc-block {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+    .acc-block:last-child { margin-bottom: 0; }
+
+    .acc-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      background: var(--gray-50);
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-700);
+      text-align: left;
+      gap: 8px;
+    }
+    .acc-trigger:hover { background: var(--gray-100); }
+
+    .acc-pts-total {
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+
+    .acc-chevron {
+      font-size: 9px;
+      color: var(--gray-400);
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .acc-trigger.is-open .acc-chevron { transform: rotate(180deg); }
+
+    .acc-body { display: none; }
+    .acc-body.is-open { display: block; }
+
+    .detail-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+    }
+
+    .di-icon {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .di-active    { background: var(--green-light);  color: var(--green); }
+    .di-inactive  { background: var(--gray-100);     color: var(--gray-400); }
+    .di-malus     { background: var(--red-light);    color: var(--red); }
+    .di-blocked   { background: var(--amber-light);  color: var(--amber); }
+
+    .di-label {
+      flex: 1;
+      font-size: 12px;
+      color: var(--gray-600);
+      line-height: 1.4;
+    }
+    .di-blocked-tag {
+      font-size: 10px;
+      color: var(--amber);
+      font-weight: 500;
+    }
+    .di-pts {
+      font-size: 12px;
+      font-weight: 600;
+      font-variant-numeric: tabular-nums;
+      min-width: 32px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .pts-pos  { color: var(--green); }
+    .pts-neg  { color: var(--red); }
+    .pts-zero { color: var(--gray-300); }
+
+    .di-source {
+      font-size: 10px;
+      color: var(--gray-300);
+      padding-left: 4px;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+
+    /* ── SS card ─────────────────────────────────────────────────── */
+    .ss-gap-tag {
+      font-size: 10px;
+      font-weight: 500;
+      padding: 2px 10px;
+      border-radius: 20px;
+      background: var(--blue-light);
+      color: var(--blue);
+      white-space: nowrap;
+    }
+
+    .ss-inner { display: flex; flex-direction: column; gap: 10px; }
+
+    .ss-client {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-900);
+    }
+    .ss-kpi {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.45;
+    }
+    .ss-citation {
+      font-size: 13px;
+      font-style: italic;
+      color: var(--gray-700);
+      border-left: 3px solid var(--blue-mid);
+      padding-left: 12px;
+      line-height: 1.55;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--gray-400);
+      font-size: 13px;
+    }
+
+    /* ── Cartographie card ───────────────────────────────────────── */
+    .carto-inner { display: flex; flex-direction: column; gap: 0; }
+
+    .carto-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--gray-100);
+    }
+    .carto-row:last-child { border-bottom: none; }
+
+    .carto-key {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gray-400);
+      min-width: 110px;
+      flex-shrink: 0;
+    }
+
+    .carto-val {
+      font-size: 12px;
+      color: var(--gray-700);
+      line-height: 1.45;
+    }
+
+    .carto-val-strong {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-900);
+      line-height: 1.45;
+    }
+
+    .carto-nb {
+      display: inline-flex;
+      align-items: center;
+      padding: 1px 8px;
+      background: var(--green-light);
+      color: var(--green);
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .carto-anchor-box {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: var(--blue-light);
+      border-radius: 6px;
+      border-left: 3px solid var(--blue);
+    }
+    .carto-anchor-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--blue);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      display: block;
+      margin-bottom: 5px;
+    }
+    .carto-anchor-msg {
+      font-size: 12px;
+      font-style: italic;
+      color: var(--gray-700);
+      line-height: 1.55;
+    }
+
+    /* ── Objections card ─────────────────────────────────────────── */
+    .obj-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .obj-item {
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .obj-question {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--gray-700);
+      padding: 8px 12px;
+      background: var(--gray-50);
+      border-bottom: 1px solid var(--gray-100);
+      font-style: italic;
+    }
+
+    .obj-reponse {
+      font-size: 12px;
+      color: var(--gray-600);
+      padding: 9px 12px 4px;
+      line-height: 1.6;
+    }
+
+    .obj-source {
+      font-size: 10px;
+      color: var(--gray-400);
+      padding: 3px 12px 8px;
+    }
+
+    /* ── Message card ────────────────────────────────────────────── */
+    .message-box {
+      font-size: 13px;
+      line-height: 1.65;
+      color: var(--gray-700);
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      padding: 14px;
+      white-space: pre-wrap;
+      margin-bottom: 10px;
+    }
+
+    .message-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .message-note {
+      font-size: 11px;
+      color: var(--gray-400);
+    }
+
+    .btn-copy {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--gray-600);
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-copy:hover  { border-color: var(--blue); color: var(--blue); }
+    .btn-copy.copied { border-color: var(--green); color: var(--green); background: var(--green-light); }
+
+    .exclu-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--red-light);
+      border-radius: 6px;
+      color: var(--red);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* ── Footer ──────────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--gray-200);
+      background: white;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .footer-note { font-size: 12px; color: var(--gray-400); }
+    .footer-links { display: flex; gap: 16px; }
+    .footer-links a {
+      font-size: 12px;
+      color: var(--gray-400);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .footer-links a:hover { color: var(--blue); }
+
+    /* ── Responsive ──────────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      main { grid-template-columns: 1fr; padding: 16px; }
+      .header-desc { display: none; }
+    }
+    @media (max-width: 480px) {
+      header { padding: 0 16px; }
+      .field-row { grid-template-columns: 1fr; }
+      .score-num { font-size: 42px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════════════════════ -->
+<header>
+  <div class="header-left">
+    <span class="logo">RADAR<span class="logo-dot">.</span></span>
+    <span class="badge-project">RADAR · 2026</span>
+  </div>
+  <p class="header-desc">
+    Simulateur de qualification lead B2B — construisez un profil restaurant, observez le scoring en temps réel, la success story matchée et le message commercial généré.
+  </p>
+</header>
+
+<!-- ══════════════════════════════════════════════════════════════
+     MAIN
+══════════════════════════════════════════════════════════════ -->
+<main>
+
+  <!-- ── Left panel ─────────────────────────────────────────── -->
+  <aside class="panel-left">
+
+    <div class="panel-section">
+      <div class="section-label">Scénario rapide</div>
+      <div class="scenario-stack">
+        <button class="btn-scenario" data-sc="fastfood" onclick="applyScenario('fastfood', this)">
+          Fast-food récent
+          <span class="sc-badge sc-prioritaire">PRIORITAIRE</span>
+        </button>
+        <button class="btn-scenario" data-sc="plateformes" onclick="applyScenario('plateformes', this)">
+          Dépendant plateformes
+          <span class="sc-badge sc-chaud">CHAUD</span>
+        </button>
+        <button class="btn-scenario" data-sc="frictions" onclick="applyScenario('frictions', this)">
+          Restaurant avec frictions
+          <span class="sc-badge sc-tiede">TIÈDE</span>
+        </button>
+        <button class="btn-scenario" data-sc="boulangerie" onclick="applyScenario('boulangerie', this)">
+          Boulangerie artisanale
+          <span class="sc-badge sc-chaud">CHAUD</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Profil restaurant</div>
+      <div class="form-stack">
+        <div class="field">
+          <label for="f-name">Nom</label>
+          <input id="f-name" type="text" placeholder="Ex: Burger Palace" oninput="syncAndUpdate()">
+        </div>
+        <div class="field">
+          <label for="f-cat">Catégorie</label>
+          <select id="f-cat" onchange="syncAndUpdate()">
+            <option value="burger">Burger / Fast-food</option>
+            <option value="pizza">Pizza / Italien</option>
+            <option value="poulet">Poulet / Chicken</option>
+            <option value="kebab">Kebab / Tacos</option>
+            <option value="poke">Poké / Bowl</option>
+            <option value="sandwich">Sandwich / Snack</option>
+            <option value="brasserie">Brasserie / Bar</option>
+            <option value="restaurant">Restaurant traditionnel</option>
+            <option value="asiatique">Cuisine asiatique</option>
+            <option value="boulangerie">Boulangerie / Pâtisserie</option>
+            <option value="collectif">Restauration collective</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="f-note">Note Google</label>
+            <input id="f-note" type="number" min="1" max="5" step="0.1" placeholder="4.2" oninput="syncAndUpdate()">
+          </div>
+          <div class="field">
+            <label for="f-avis">Nb avis</label>
+            <input id="f-avis" type="number" min="0" placeholder="23" oninput="syncAndUpdate()">
+          </div>
+        </div>
+        <div class="field">
+          <label for="f-date">Date d'ouverture</label>
+          <input id="f-date" type="date" oninput="syncAndUpdate()">
+        </div>
+      </div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Timing</div>
+      <div class="toggle-stack" id="grp-timing"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Distribution livraison</div>
+      <div class="toggle-stack" id="grp-distribution"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Commande digitale</div>
+      <div class="toggle-stack" id="grp-commande"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Présence digitale</div>
+      <div class="toggle-stack" id="grp-presence"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Douleur visible</div>
+      <div class="toggle-stack" id="grp-douleur"></div>
+    </div>
+
+    <div class="panel-section">
+      <div class="section-label">Contexte</div>
+      <div class="toggle-stack" id="grp-contexte"></div>
+    </div>
+
+  </aside>
+
+  <!-- ── Right panel ────────────────────────────────────────── -->
+  <section class="panel-right">
+
+    <!-- Score -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Score de qualification</span>
+        <span id="label-badge" class="label-badge lbl-prioritaire">
+          <span class="badge-dot"></span> PRIORITAIRE
+        </span>
+      </div>
+      <div class="card-body">
+        <div class="score-layout">
+          <div class="score-num-wrap">
+            <div id="score-num" class="score-num">0</div>
+            <div class="score-cap">/ ~180 pts max</div>
+          </div>
+          <div class="score-bars">
+            <div class="bar-row">
+              <span class="bar-label">Profil</span>
+              <span id="bar-profil-v" class="bar-val">0</span>
+              <div class="progress">
+                <div id="bar-profil" class="progress-fill fill-blue" style="width:0%"></div>
+              </div>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">Signal</span>
+              <span id="bar-sms-v" class="bar-val">0</span>
+              <div class="progress">
+                <div id="bar-sms" class="progress-fill fill-green" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Score detail -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Détail du score</span>
+      </div>
+      <div class="card-body" style="padding:12px 16px">
+        <div id="detail-container"></div>
+      </div>
+    </div>
+
+    <!-- Success story -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Success Story matchée</span>
+        <span id="ss-gap-tag" class="ss-gap-tag" style="display:none"></span>
+      </div>
+      <div class="card-body">
+        <div id="ss-zone">
+          <div class="empty-state">Activez des signaux pour voir la success story correspondante.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cartographie concurrentielle -->
+    <div class="card" id="card-carto" style="display:none">
+      <div class="card-head">
+        <span class="card-title">Cartographie concurrentielle</span>
+        <span class="card-subtitle">Prospects pré-qualifiés par proximité</span>
+      </div>
+      <div class="card-body">
+        <div id="carto-zone"></div>
+      </div>
+    </div>
+
+    <!-- Objections anticipées -->
+    <div class="card" id="card-objections" style="display:none">
+      <div class="card-head">
+        <span class="card-title">Objections anticipées</span>
+        <span class="card-subtitle">Séquence de relance</span>
+      </div>
+      <div class="card-body">
+        <div id="obj-zone"></div>
+      </div>
+    </div>
+
+    <!-- Message -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Message commercial généré</span>
+      </div>
+      <div class="card-body">
+        <div id="msg-zone">
+          <div class="empty-state">Le message s'affichera une fois les signaux activés.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ══════════════════════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════════════════ -->
+<footer>
+  <span class="footer-note">RADAR · Moteur de qualification B2B pour restaurants · Zéro IA — 100 % règles métier</span>
+  <div class="footer-links">
+    <a href="https://github.com/" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://linkedin.com/" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════════════════════════════
+     JAVASCRIPT
+══════════════════════════════════════════════════════════════ -->
+<script>
+"use strict";
+
+// ──────────────────────────────────────────────────────────────
+// DATA — SOLUTION_MAP
+// FIX : signal_sans_commande_en_ligne → 2 signaux distincts
+//   signal_sans_commande_salle    → borne/KDS (flux en salle)
+//   signal_sans_commande_distante → Click & Collect / livraison propre
+// ──────────────────────────────────────────────────────────────
+const SOLUTION_MAP = {
+  livraison_propre: {
+    label: "Livraison en propre (sans commission plateforme)",
+    signal_besoin: ["signal_plateforme_uniquement"],
+    signal_concurrent: [],
+    score_weight: 20,
+    ss_ids: ["ankka_presquile", "double_xl", "foud"]
+  },
+  mise_en_place_livraison: {
+    label: "Lancement de la livraison",
+    signal_besoin: ["signal_sans_livraison"],
+    signal_concurrent: [],
+    score_weight: 12,
+    ss_ids: ["ankka_presquile", "foud"]
+  },
+  commande_en_ligne: {
+    label: "Click & Collect / Commande en ligne",
+    signal_besoin: ["signal_sans_commande_distante"],
+    signal_concurrent: ["signal_concurrent_zenchef", "signal_concurrent_zelty", "signal_concurrent_laddition"],
+    score_weight: 20,
+    ss_ids: ["clasico_argentino", "ankka_grenoble", "comptoir_du_malt", "nampla", "italian_queen", "menagerie_du_roi", "what_the_foc", "focaccia_club"]
+  },
+  borne_kds: {
+    label: "Borne de commande + KDS cuisine",
+    signal_besoin: ["signal_sans_commande_salle"],
+    signal_concurrent: [],
+    score_weight: 15,
+    ss_ids: ["alfi", "smash_smash", "bchef", "bozzolo", "chicken_village", "what_the_foc", "11h59", "bagelstein"]
+  },
+  caisse_monnayeur: {
+    label: "Caisse + monnayeur automatique",
+    signal_besoin: ["signal_sans_commande_distante"],
+    signal_concurrent: ["signal_concurrent_laddition", "signal_concurrent_cashpad", "signal_concurrent_zelty"],
+    score_weight: 8,
+    ss_ids: ["tranche", "bozzolo"]
+  },
+  reservation_en_ligne: {
+    label: "Réservation en ligne",
+    signal_besoin: ["signal_sans_reservation"],
+    signal_concurrent: ["signal_thefork_present", "signal_concurrent_zenchef", "signal_concurrent_guestonline", "signal_concurrent_opentable"],
+    score_weight: 5,
+    ss_ids: []
+  }
+};
+
+// ──────────────────────────────────────────────────────────────
+// DATA — SS_CORPUS (19 success stories)
+// FIX : signals_requis et signals_bonus mis à jour avec les nouveaux noms
+// ──────────────────────────────────────────────────────────────
+const SS_CORPUS = [
+
+  // ── LIVRAISON PROPRE / INDÉPENDANCE PLATEFORMES ──────────────
+
+  {
+    id: "ankka_presquile",
+    client: "Ankka Presqu'île",
+    solution_ids: ["livraison_propre", "mise_en_place_livraison"],
+    segment_keywords: [],
+    fast_food_only: false,
+    signals_requis: ["signal_plateforme_uniquement"],
+    signals_bonus: ["signal_sans_livraison"],
+    kpi: "500 €/jour en livraison directe, sans reverser une commission",
+    citation: "Les premières commandes arrivent à 8h — les clients choisissent leur créneau en quelques clics.",
+    hook_platform: "{nom}, vous livrez déjà — mais via Deliveroo ou Uber Eats, vous reversez 25 à 30 % sur chaque commande.",
+    hook_no_online: null,
+    hook_no_delivery: null,
+    priority: 1
+  },
+  {
+    id: "double_xl",
+    client: "Double XL",
+    solution_ids: ["livraison_propre"],
+    segment_keywords: ["fast", "burger", "rapide", "snack", "kebab", "poulet", "chicken"],
+    fast_food_only: true,
+    signals_requis: ["signal_plateforme_uniquement"],
+    signals_bonus: ["signal_sans_commande_distante"],
+    kpi: "livraison 100 % en propre, +30 % de productivité équipe",
+    citation: "En livrant en propre, il génère des ventes additionnelles et garde toute sa marge.",
+    hook_platform: "{nom}, vous gérez la livraison via les plateformes — chaque commande leur verse de la marge.",
+    hook_no_online: null,
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "foud",
+    client: "Foud",
+    solution_ids: ["livraison_propre", "mise_en_place_livraison"],
+    segment_keywords: [],
+    fast_food_only: false,
+    signals_requis: ["signal_plateforme_uniquement"],
+    signals_bonus: ["signal_sans_commande_distante", "signal_nouveau"],
+    kpi: "~250 livraisons/jour en propre, zéro commission plateforme",
+    citation: "Le logiciel nous permet de dupliquer facilement nos processus sur chaque nouveau site.",
+    hook_platform: "{nom}, vous êtes {age} — chaque livraison via Deliveroo ou Uber Eats vous coûte entre 25 et 30 %.",
+    hook_no_online: null,
+    hook_no_delivery: null,
+    priority: 3
+  },
+
+  // ── FAST-FOOD : FILE D'ATTENTE + PANIER MOYEN ────────────────
+
+  {
+    id: "alfi",
+    client: "Alfi",
+    solution_ids: ["borne_kds"],
+    segment_keywords: ["sandwich", "snack", "fast", "burger", "rapide", "street"],
+    fast_food_only: true,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_nouveau", "signal_sans_site"],
+    kpi: "+28 % de panier moyen (18 € → 23 €), file d'attente divisée par deux",
+    citation: "Grâce au KDS, tout est fluide, les assembleurs ne se trompent pas.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} et vous gérez encore toutes les commandes en caisse.",
+    hook_no_delivery: null,
+    priority: 1
+  },
+  {
+    id: "smash_smash",
+    client: "Smash Smash",
+    solution_ids: ["borne_kds"],
+    segment_keywords: ["burger", "smash", "fast", "rapide", "snack", "grill"],
+    fast_food_only: true,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_nouveau", "signal_plateforme_uniquement"],
+    kpi: "+30 % de panier moyen sur borne vs caisse",
+    citation: "Le caissier n'a pas toujours le temps de proposer un dessert. La borne, si.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — vos clients commandent au comptoir, et chaque minute perdue en caisse est un client qui repart.",
+    hook_no_delivery: null,
+    priority: 1
+  },
+  {
+    id: "bchef",
+    client: "BCHEF",
+    solution_ids: ["borne_kds"],
+    segment_keywords: ["burger", "fast", "rapide", "snack", "sandwich", "poulet", "chicken"],
+    fast_food_only: true,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_sans_livraison"],
+    kpi: "encaissement augmenté, file d'attente éliminée au rush",
+    citation: "Innovorder est une solution simple et efficace, sur laquelle on est vite autonome.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — aux heures de rush, la file s'allonge et le personnel de caisse est saturé.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "bozzolo",
+    client: "Bozzolo",
+    solution_ids: ["borne_kds", "caisse_monnayeur"],
+    segment_keywords: ["fast", "rapide", "burger", "pizza", "poulet", "snack", "kebab"],
+    fast_food_only: true,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_sans_livraison", "signal_sans_commande_distante"],
+    kpi: "87 % des commandes sur bornes, rush géré avec peu de personnel",
+    citation: "J'ai choisi Innovorder car c'est une solution globale — un seul opérateur couvre tous mes besoins.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} et vous gérez encore tout en caisse, même pendant les rushs.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "chicken_village",
+    client: "Chicken Village",
+    solution_ids: ["borne_kds"],
+    segment_keywords: ["poulet", "chicken", "fast", "rapide", "snack"],
+    fast_food_only: true,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_sans_livraison", "signal_nouveau"],
+    kpi: "200 clients servis par heure sans erreur",
+    citation: "Les clients commandent depuis leur chambre d'hôtel, ils viennent récupérer quand c'est prêt.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — servir un volume important sans erreur, c'est le défi quotidien.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+
+  // ── CLICK & COLLECT / COMMANDE EN LIGNE ─────────────────────
+
+  {
+    id: "clasico_argentino",
+    client: "Clasico Argentino",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: [],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: ["signal_nouveau", "signal_sans_site"],
+    kpi: "×4 sur le nombre de clients en 6 mois",
+    citation: "Le Click & Collect a généré près de 40 % du CA via la vente à emporter.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — vos clients viennent en salle, mais sans commande en ligne, une partie ne reviendra jamais.",
+    hook_no_delivery: null,
+    priority: 1
+  },
+  {
+    id: "comptoir_du_malt",
+    client: "Le Comptoir du Malt",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: ["brasserie", "bar", "pub", "café", "bistro", "bistr"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: ["signal_sans_livraison"],
+    kpi: "ventes additionnelles optimisées, gestion des rushs sans friction",
+    citation: "Le Click & Collect a transformé la façon dont on gère les rushes et les ruptures.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — sans commande en ligne, vous ratez des ventes additionnelles à chaque service.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "what_the_foc",
+    client: "What The Foc?!",
+    solution_ids: ["commande_en_ligne", "borne_kds"],
+    segment_keywords: ["sandwich", "snack", "street", "fast", "focaccia", "traiteur"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_nouveau", "signal_sans_commande_distante"],
+    kpi: "30 % des commandes via borne, files d'attente réduites",
+    citation: "La borne nous sauve la vie lors des gros rushs.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — gérer les rushs et plusieurs canaux à la fois, c'est là que le bât blesse.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "nampla",
+    client: "Nampla",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: ["asiatique", "asian", "japonais", "chinois", "thaï", "wok", "sushi", "poke", "bowl"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: [],
+    kpi: "17 % des commandes captées par la borne, production cuisine fluidifiée",
+    citation: "Je gagne quelques dizaines de secondes par plat — à l'échelle d'un restaurant, c'est énorme.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — les commandes arrivent plus vite que la cuisine peut les traiter.",
+    hook_no_delivery: null,
+    priority: 3
+  },
+  {
+    id: "ankka_grenoble",
+    client: "Ankka Grenoble",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: ["salade", "bowl", "healthy", "végétarien", "vegan", "poke"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: ["signal_nouveau"],
+    kpi: "panier moyen augmenté, gaspillage réduit, rush géré sans caissier dédié",
+    citation: "La borne facilite les achats additionnels. Les clients sont moins stressés pour choisir.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — sans outil de commande, vous perdez des ventes additionnelles à chaque service.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "menagerie_du_roi",
+    client: "Ménagerie du Roi",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: ["brasserie", "bar", "bistro", "bistr", "café", "restaurant", "taverne"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: ["signal_sans_livraison"],
+    kpi: "ré-commandes facilitées, hausse des ventes sans embauche",
+    citation: "Click & Serve me permet d'augmenter mes ventes — c'est plus facile pour les clients de recommander.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — vos clients attendent un serveur pour recommander une boisson. La moitié ne le fait pas.",
+    hook_no_delivery: null,
+    priority: 3
+  },
+  {
+    id: "italian_queen",
+    client: "Italian Queen",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: ["pizza", "pizz", "italien", "itali"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: [],
+    kpi: "+15 % de chiffre d'affaires",
+    citation: "Grâce aux bornes et QR codes, chaque pizza est personnalisée à grande échelle.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — personnaliser chaque commande manuellement ralentit tout le service.",
+    hook_no_delivery: null,
+    priority: 3
+  },
+
+  // ── FRANCHISE / RÉSEAU ───────────────────────────────────────
+
+  {
+    id: "bagelstein",
+    client: "Bagelstein",
+    solution_ids: ["borne_kds"],
+    segment_keywords: ["bagel", "sandwich", "fast", "snack"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: [],
+    kpi: "hausse significative du panier moyen sur l'ensemble du réseau",
+    citation: "Qui suis-je pour priver mon réseau de franchisés de cette croissance ?",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — si vous hésitez encore à digitaliser, vous n'êtes pas le seul à avoir eu ce doute.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+  {
+    id: "focaccia_club",
+    client: "Focaccia Club",
+    solution_ids: ["commande_en_ligne"],
+    segment_keywords: ["sandwich", "snack", "fast", "focaccia", "street"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: ["signal_nouveau"],
+    kpi: "9 points de vente équipés, déploiement national préparé",
+    citation: "C'est très rassurant de travailler avec une structure qui comprend mes besoins.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — dès le départ, choisir les bons outils évite de tout réinstaller au deuxième site.",
+    hook_no_delivery: null,
+    priority: 3
+  },
+
+  // ── BOULANGERIE ───────────────────────────────────────────────
+
+  {
+    id: "tranche",
+    client: "Tranché",
+    solution_ids: ["caisse_monnayeur"],
+    segment_keywords: ["boulangerie", "boulang", "pâtisserie", "pâtiss", "viennoiserie", "artisan"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_distante"],
+    signals_bonus: [],
+    kpi: "erreurs de caisse éliminées, contrôle des marges en temps réel",
+    citation: "Sans monnayeur, c'est des erreurs, du temps perdu, et beaucoup d'incertitudes.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — entre 20 et 30 % des ventes en espèces, c'est du temps et des erreurs évitables.",
+    hook_no_delivery: null,
+    priority: 2
+  },
+
+  // ── RESTAURATION COLLECTIVE ───────────────────────────────────
+
+  {
+    id: "11h59",
+    client: "11H59",
+    solution_ids: ["borne_kds"],
+    segment_keywords: ["collectif", "entreprise", "traiteur", "cafétéria", "cantine"],
+    fast_food_only: false,
+    signals_requis: ["signal_sans_commande_salle"],
+    signals_bonus: [],
+    kpi: "service fluide malgré forte affluence, clients gagnent du temps sur leur pause",
+    citation: "Le numérique fait gagner un temps précieux aux convives — ils profitent davantage de leur pause.",
+    hook_platform: null,
+    hook_no_online: "{nom}, vous êtes {age} — les longues files à midi, c'est du temps perdu pour vos convives et des ventes perdues pour vous.",
+    hook_no_delivery: null,
+    priority: 2
+  }
+
+];
+
+// ──────────────────────────────────────────────────────────────
+// DATA — CARTO_DATA
+// Section 8 du document : cartographie concurrentielle
+// Pour chaque SS, la zone de prospection générée par proximité
+// ──────────────────────────────────────────────────────────────
+const CARTO_DATA = {
+  alfi:              { client_loc: "Sandwicherie premium, Marais — Paris 3e/4e", prospect_zone: "Sandwicheries premium du Marais sans borne visible", radius: "500 m", nb_prospects: "10–15" },
+  smash_smash:       { client_loc: "Burger/smash bar, zone commerçante urbaine", prospect_zone: "Burger bars en zone piétonne sans borne de commande", radius: "1 km",  nb_prospects: "6–12"  },
+  bchef:             { client_loc: "Franchise burger, zone aéroport Bordeaux",   prospect_zone: "Fast-foods en zone aéroport sans solution digitale intégrée", radius: "3 km",  nb_prospects: "5–10"  },
+  bozzolo:           { client_loc: "Fast-food, proximité cinéma Fontainebleau",  prospect_zone: "Fast-foods proches de cinémas en Île-de-France", radius: "2 km",  nb_prospects: "8–20"  },
+  chicken_village:   { client_loc: "Fast-food, côté hôtel + campus universitaire", prospect_zone: "Restaurants en pied d'hôtel ou sur campus universitaire", radius: "1 km",  nb_prospects: "5–12"  },
+  ankka_presquile:   { client_loc: "Salad bar, zone tertiaire Grenoble (HP, CA)", prospect_zone: "Concepts healthy en zones tertiaires similaires", radius: "1 km",  nb_prospects: "10–25" },
+  double_xl:         { client_loc: "Fast-food, proximité Disneyland Paris",       prospect_zone: "Restaurants en zone touristique à flux continu", radius: "2 km",  nb_prospects: "15–30" },
+  foud:              { client_loc: "Dark kitchen / take-away, Paris",             prospect_zone: "Dark kitchens et take-away naissants sans logistique propre", radius: "Arrondissement", nb_prospects: "10–20" },
+  clasico_argentino: { client_loc: "Restaurant argentin indépendant, Paris",      prospect_zone: "Restaurants indépendants du même quartier sans Click & Collect", radius: "1 km",  nb_prospects: "10–20" },
+  comptoir_du_malt:  { client_loc: "Brasserie artisanale, nord de France",        prospect_zone: "Brasseries et bars avec rushes midi sans outil digital", radius: "1 km",  nb_prospects: "10–20" },
+  what_the_foc:      { client_loc: "Street-food focacceria, Paris",               prospect_zone: "Concepts street-food avec rushs midi non gérés", radius: "500 m", nb_prospects: "8–15"  },
+  nampla:            { client_loc: "Restaurant asiatique, Paris",                 prospect_zone: "Restaurants asiatiques avec flux cuisine non optimisé", radius: "1 km",  nb_prospects: "10–20" },
+  ankka_grenoble:    { client_loc: "Salad bar, zone tertiaire Grenoble",          prospect_zone: "Salad bars / bowls en zones tertiaires régionales", radius: "2 km",  nb_prospects: "8–15"  },
+  menagerie_du_roi:  { client_loc: "Brasserie-restaurant salle, Paris",           prospect_zone: "Restaurants salle avec re-commande manuelle inefficace", radius: "500 m", nb_prospects: "8–12"  },
+  italian_queen:     { client_loc: "Pizzeria, Paris",                             prospect_zone: "Pizzerias avec personnalisation manuel ralentissant le service", radius: "1 km",  nb_prospects: "8–15"  },
+  bagelstein:        { client_loc: "Franchise bagel, national (120+ PDV)",        prospect_zone: "Franchises F&B hésitant sur la digitalisation de leur réseau", radius: "National", nb_prospects: "50+"   },
+  focaccia_club:     { client_loc: "9 restaurants Paris, expansion en cours",     prospect_zone: "Chaînes 3–12 points de vente à Paris sans backoffice centralisé", radius: "Paris", nb_prospects: "20–40" },
+  tranche:           { client_loc: "Boulangerie artisanale, Paris",               prospect_zone: "Boulangeries artisanales avec caisse manuelle et forte part d'espèces", radius: "1 km",  nb_prospects: "15–30" },
+  "11h59":           { client_loc: "Restauration collective d'entreprise, Paris", prospect_zone: "Restaurants collectifs d'entreprise sans borne de commande", radius: "Zone industrielle", nb_prospects: "5–15" }
+};
+
+// ──────────────────────────────────────────────────────────────
+// DATA — OBJECTIONS_DATA
+// Section 6 du document : objections anticipées avec réponses sourcées
+// Affichées en séquence de relance selon le profil détecté
+// ──────────────────────────────────────────────────────────────
+const OBJECTIONS_DATA = [
+  {
+    id: "humanisation",
+    condition: (s) => ["brasserie", "bar", "restaurant", "asiatique"].includes(s.category),
+    question: "\"Mes clients préfèrent le contact humain — la technologie va déshumaniser mon concept.\"",
+    reponse: "Thierry Veil (Bagelstein) était contre les bornes — il le dit explicitement. Il a quand même acheté après avoir vu les chiffres de son réseau. À la Ménagerie du Roi, la caisse est restée disponible : la borne s'ajoute, elle ne remplace pas. L'expérience humaine n'est pas supprimée — elle est libérée des tâches répétitives.",
+    source: "Bagelstein + Ménagerie du Roi"
+  },
+  {
+    id: "adoption_borne",
+    condition: (s) => s.signal_sans_commande_salle,
+    question: "\"Mes clients n'utiliseront pas la borne — ils préfèrent commander en caisse.\"",
+    reponse: "Bozzolo pensait pareil. Aujourd'hui 87 % de ses commandes passent par borne — sans qu'on leur ait forcé la main. La borne est simplement plus rapide aux heures de rush. L'adoption se fait naturellement dès les premières semaines.",
+    source: "Bozzolo (87 % sur borne)"
+  },
+  {
+    id: "deploiement",
+    condition: (s) => s.signal_nouveau || s.signal_sans_commande_salle || s.signal_sans_commande_distante,
+    question: "\"Le déploiement va prendre trop de temps et perturber mon activité.\"",
+    reponse: "Bagel Corner a équipé 40 points de vente en quelques semaines. Pour un site unique, c'est une affaire de jours. Le support accompagne chaque ouverture — Convivio et Big Fernand l'ont cité explicitement comme facteur de décision.",
+    source: "Bagel Corner (40 PDV en quelques semaines) + Convivio"
+  },
+  {
+    id: "dependance_outil",
+    condition: (s) => s.signal_plateforme_uniquement,
+    question: "\"Je veux pas dépendre d'un seul outil — si ça tombe en panne, je perds tout.\"",
+    reponse: "La solution s'intègre avec les outils comptables, RH et ERP existants (Convivio, Tranché). Et vous éliminez surtout une dépendance bien plus coûteuse : les 25–30 % de commission plateforme sur chaque livraison. Garder les plateformes ET avoir un canal propre, c'est exactement ce que fait Double XL.",
+    source: "Convivio + Tranché + Double XL"
+  },
+  {
+    id: "roi",
+    condition: (s) => s.signal_note_faible || s.signal_avis_negatifs_recents || s.signal_sans_commande_salle,
+    question: "\"Je ne vois pas le retour sur investissement — c'est un coût de plus.\"",
+    reponse: "Alfi : panier moyen +28 % (18 € → 23 €). Smash Smash : +30 % borne vs caisse. Clasico Argentino : ×4 clients en 6 mois. Ankka Presqu'île : +500 €/jour en livraison directe. Ces chiffres sont mesurés, publiés, et vérifiables — pas des projections.",
+    source: "Alfi + Smash Smash + Clasico Argentino + Ankka Presqu'île"
+  }
+];
+
+// ──────────────────────────────────────────────────────────────
+// TOGGLE GROUPS CONFIG
+// FIX : signal_sans_commande_en_ligne remplacé par 2 signaux
+//       hints d'exclusivité mutuelle sur plateforme/livraison
+// ──────────────────────────────────────────────────────────────
+const TOGGLE_GROUPS = [
+  {
+    id: "grp-timing",
+    signals: [
+      { id: "signal_nouveau", name: "Nouveau restaurant (< 6 mois)", pts: "+35 Profil" }
+    ]
+  },
+  {
+    id: "grp-distribution",
+    signals: [
+      { id: "signal_plateforme_uniquement", name: "Livraison via plateformes uniquement", pts: "+20 Profil", hint: "exclut 'Aucune livraison'" },
+      { id: "signal_sans_livraison",        name: "Aucune livraison proposée",            pts: "+12 Profil", hint: "exclut 'Via plateformes'" }
+    ]
+  },
+  {
+    id: "grp-commande",
+    signals: [
+      { id: "signal_sans_commande_salle",    name: "Pas de borne / commande autonome en salle",    pts: "+15 Profil" },
+      { id: "signal_sans_commande_distante", name: "Pas de Click & Collect / commande à distance", pts: "+28 Profil" }
+    ]
+  },
+  {
+    id: "grp-presence",
+    signals: [
+      { id: "signal_sans_site",        name: "Absence de site web",         pts: "+8 Profil" },
+      { id: "signal_sans_reservation", name: "Pas de réservation en ligne", pts: "+5 Profil" }
+    ]
+  },
+  {
+    id: "grp-douleur",
+    signals: [
+      { id: "signal_note_faible",           name: "Note Google < 3.8",      pts: "+5 Profil"  },
+      { id: "signal_avis_negatifs_recents", name: "Avis négatifs récents",  pts: "+15 Signal" }
+    ]
+  },
+  {
+    id: "grp-contexte",
+    signals: [
+      { id: "signal_changement_gerant", name: "Changement de gérant récent", pts: "+15 Signal"  },
+      { id: "signal_deja_equipe",       name: "Concurrent détecté sur site",  pts: "−15 Profil", malus: true },
+      { id: "signal_ferme",             name: "Restaurant fermé (SIRENE)",    pts: "EXCLU",       malus: true }
+    ]
+  }
+];
+
+// ──────────────────────────────────────────────────────────────
+// STATE
+// FIX : signal_sans_commande_en_ligne → signal_sans_commande_salle
+//       + signal_sans_commande_distante
+// ──────────────────────────────────────────────────────────────
+const S = {
+  name:          "Burger Palace",
+  category:      "burger",
+  date:          null,
+  review_rating: 4.2,
+  review_count:  23,
+  signal_nouveau:                 false,
+  signal_plateforme_uniquement:   false,
+  signal_sans_livraison:          false,
+  signal_sans_commande_salle:     false,
+  signal_sans_commande_distante:  false,
+  signal_sans_site:               false,
+  signal_sans_reservation:        false,
+  signal_note_faible:             false,
+  signal_avis_negatifs_recents:   false,
+  signal_changement_gerant:       false,
+  signal_deja_equipe:             false,
+  signal_ferme:                   false,
+  // concurrent signals (not exposed in UI — default false)
+  signal_concurrent_zenchef:      false,
+  signal_concurrent_zelty:        false,
+  signal_concurrent_laddition:    false,
+  signal_concurrent_cashpad:      false,
+  signal_concurrent_guestonline:  false,
+  signal_concurrent_opentable:    false,
+  signal_thefork_present:         false
+};
+
+// ──────────────────────────────────────────────────────────────
+// SCENARIOS
+// FIX : 4 scénarios (+ Boulangerie), signaux contradictoires corrigés
+// ──────────────────────────────────────────────────────────────
+function daysAgo(n) {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString().slice(0, 10);
+}
+
+const SCENARIOS = {
+  fastfood: {
+    name: "Burger Palace", category: "burger",
+    date: daysAgo(62), review_rating: 4.2, review_count: 23,
+    signals: {
+      signal_nouveau: true,
+      signal_plateforme_uniquement: false,
+      signal_sans_livraison: false,
+      signal_sans_commande_salle: true,
+      signal_sans_commande_distante: true,
+      signal_sans_site: true,
+      signal_sans_reservation: false,
+      signal_note_faible: false,
+      signal_avis_negatifs_recents: false,
+      signal_changement_gerant: false,
+      signal_deja_equipe: false,
+      signal_ferme: false
+    }
+  },
+  // FIX : signal_plateforme_uniquement + signal_sans_commande_en_ligne étaient
+  //       activés simultanément — maintenant cohérent : plateforme=true,
+  //       commande_salle=false (a une caisse), commande_distante=true (pas de C&C propre)
+  plateformes: {
+    name: "Les Saveurs du Marché", category: "restaurant",
+    date: daysAgo(420), review_rating: 4.0, review_count: 67,
+    signals: {
+      signal_nouveau: false,
+      signal_plateforme_uniquement: true,
+      signal_sans_livraison: false,
+      signal_sans_commande_salle: false,
+      signal_sans_commande_distante: true,
+      signal_sans_site: false,
+      signal_sans_reservation: true,
+      signal_note_faible: false,
+      signal_avis_negatifs_recents: false,
+      signal_changement_gerant: false,
+      signal_deja_equipe: false,
+      signal_ferme: false
+    }
+  },
+  frictions: {
+    name: "Brasserie du Centre", category: "brasserie",
+    date: daysAgo(1460), review_rating: 3.5, review_count: 198,
+    signals: {
+      signal_nouveau: false,
+      signal_plateforme_uniquement: false,
+      signal_sans_livraison: true,
+      signal_sans_commande_salle: false,
+      signal_sans_commande_distante: false,
+      signal_sans_site: false,
+      signal_sans_reservation: false,
+      signal_note_faible: true,
+      signal_avis_negatifs_recents: true,
+      signal_changement_gerant: false,
+      signal_deja_equipe: false,
+      signal_ferme: false
+    }
+  },
+  boulangerie: {
+    name: "Au Pain de Marie", category: "boulangerie",
+    date: daysAgo(730), review_rating: 4.5, review_count: 156,
+    signals: {
+      signal_nouveau: false,
+      signal_plateforme_uniquement: false,
+      signal_sans_livraison: false,
+      signal_sans_commande_salle: false,
+      signal_sans_commande_distante: true,
+      signal_sans_site: true,
+      signal_sans_reservation: false,
+      signal_note_faible: false,
+      signal_avis_negatifs_recents: false,
+      signal_changement_gerant: true,
+      signal_deja_equipe: false,
+      signal_ferme: false
+    }
+  }
+};
+
+// ──────────────────────────────────────────────────────────────
+// SCORING ENGINE
+// ──────────────────────────────────────────────────────────────
+const FAST_FOOD_KW = [
+  "burger","pizza","poulet","chicken","poke","kebab","tacos",
+  "fast","sandwich","wrap","bagel","nugget","smash","fried",
+  "frites","grill","snack","rapide","street"
+];
+
+function isFastFood(category, name) {
+  const t = (category + " " + name).toLowerCase();
+  return FAST_FOOD_KW.some(k => t.includes(k));
+}
+
+// FIX : signal_nouveau en paramètre pour éviter le double comptage
+function scoreAnciennete(dateStr, signalNouveau) {
+  // Si signal_nouveau est activé manuellement, l'ancienneté contribue déjà
+  // au Score Profil via +35 pts. On ne la recompte pas dans le Score Signal.
+  if (signalNouveau) return 0;
+  if (!dateStr) return 0;
+  const d = new Date(dateStr);
+  if (isNaN(d)) return 0;
+  const days = (Date.now() - d.getTime()) / 86400000;
+  if (days < 91)  return 25;
+  if (days < 182) return 15;
+  if (days < 365) return 8;
+  return 0;
+}
+
+// FIX : signal_sans_reservation ajouté dans le comptage
+function countActiveSignals(s) {
+  return [
+    "signal_nouveau",
+    "signal_sans_site",
+    "signal_sans_livraison",
+    "signal_sans_commande_salle",
+    "signal_sans_commande_distante",
+    "signal_plateforme_uniquement",
+    "signal_note_faible",
+    "signal_avis_negatifs_recents",
+    "signal_changement_gerant",
+    "signal_sans_reservation"
+  ].filter(k => s[k]).length;
+}
+
+function computeSolutionScore(s) {
+  let score = 0;
+  const gaps = [];
+  for (const [solId, sol] of Object.entries(SOLUTION_MAP)) {
+    const besoin  = sol.signal_besoin.some(sig => s[sig]);
+    const blocked = besoin && sol.signal_concurrent.some(sig => s[sig]);
+    if (besoin && !blocked) {
+      score += sol.score_weight;
+      gaps.push(solId);
+    }
+  }
+  return { score, gaps };
+}
+
+function topSolutionGap(s) {
+  let best = null, bestW = -1;
+  for (const [solId, sol] of Object.entries(SOLUTION_MAP)) {
+    const besoin  = sol.signal_besoin.some(sig => s[sig]);
+    const blocked = besoin && sol.signal_concurrent.some(sig => s[sig]);
+    if (besoin && !blocked && sol.score_weight > bestW) {
+      bestW = sol.score_weight;
+      best  = solId;
+    }
+  }
+  return best;
+}
+
+function computeScore(s) {
+  if (s.signal_ferme) {
+    return { sp: 0, sms: 0, total: 0, label: "EXCLU", nb: 0, gaps: [] };
+  }
+
+  // Score Profil
+  let sp = s.signal_nouveau ? 35 : 0;
+  const { score: solScore, gaps } = computeSolutionScore(s);
+  sp += solScore;
+  if (s.signal_sans_site)   sp += 8;
+  if (isFastFood(s.category, s.name)) sp += 8;
+  if (s.signal_note_faible) sp += 5;
+  if (s.signal_deja_equipe) sp -= 15;
+  sp = Math.max(0, sp);
+
+  // Score Signal — FIX : double comptage ancienneté corrigé
+  let sms = scoreAnciennete(s.date, s.signal_nouveau);
+  if (s.signal_avis_negatifs_recents) sms += 15;
+  if (s.signal_changement_gerant)     sms += 15;
+  if (countActiveSignals(s) >= 3)     sms += 15;
+
+  const total = sp + sms;
+  let label;
+  // FIX : seuil PRIORITAIRE relevé de 90 → 100
+  if      (total >= 100) label = "PRIORITAIRE";
+  else if (total >= 60)  label = "CHAUD";
+  else if (total >= 20)  label = "TIÈDE";
+  else                   label = "FROID";
+
+  return { sp, sms, total, label, nb: countActiveSignals(s), gaps };
+}
+
+// ──────────────────────────────────────────────────────────────
+// SCORE DETAIL
+// ──────────────────────────────────────────────────────────────
+function buildDetail(s) {
+  const profil = [];
+  const smsItems = [];
+
+  // Timing
+  profil.push({
+    label: "Nouveau restaurant (< 6 mois)",
+    pts: s.signal_nouveau ? 35 : 0, max: 35,
+    active: s.signal_nouveau, source: "SIRENE"
+  });
+
+  // Solutions (itération dynamique sur SOLUTION_MAP mis à jour)
+  for (const [solId, sol] of Object.entries(SOLUTION_MAP)) {
+    const besoin = sol.signal_besoin.some(sig => s[sig]);
+    let blockedBy = null;
+    if (besoin) {
+      for (const sig of sol.signal_concurrent) {
+        if (s[sig]) {
+          blockedBy = sig
+            .replace("signal_concurrent_", "")
+            .replace("signal_thefork_present", "TheFork");
+          break;
+        }
+      }
+    }
+    const active = besoin && !blockedBy;
+    const item = {
+      label: sol.label,
+      pts: active ? sol.score_weight : 0,
+      max: sol.score_weight,
+      active, source: "Signaux combinés", type: "solution"
+    };
+    if (blockedBy) item.blocked_by = blockedBy.charAt(0).toUpperCase() + blockedBy.slice(1);
+    profil.push(item);
+  }
+
+  // Qualificatifs
+  profil.push({
+    label: "Absence de site web", pts: s.signal_sans_site ? 8 : 0,
+    max: 8, active: s.signal_sans_site, source: "Google Maps"
+  });
+
+  const ff = isFastFood(s.category, s.name);
+  profil.push({
+    label: "Segment fast-food (fit produit fort)", pts: ff ? 8 : 0,
+    max: 8, active: ff, source: "Google Maps"
+  });
+
+  profil.push({
+    label: "Note Google faible (< 3.8)", pts: s.signal_note_faible ? 5 : 0,
+    max: 5, active: s.signal_note_faible, source: "Google Maps"
+  });
+
+  // Malus
+  profil.push({
+    label: "Malus — concurrent détecté sur site web",
+    pts: s.signal_deja_equipe ? -15 : 0,
+    max: -15, active: s.signal_deja_equipe,
+    source: "Website scan", type: "malus"
+  });
+
+  // Signal items — FIX : scoreAnciennete prend signal_nouveau en compte
+  const anc  = scoreAnciennete(s.date, s.signal_nouveau);
+  const days = s.date ? Math.floor((Date.now() - new Date(s.date).getTime()) / 86400000) : null;
+  let ancLabel = "Date d'ouverture inconnue";
+  if (s.signal_nouveau && days !== null && days < 365) {
+    ancLabel = "Ancienneté déjà comptée via Signal Nouveau (+35 Profil)";
+  } else if (days !== null) {
+    if      (days < 91)  ancLabel = "Ouvert il y a < 3 mois";
+    else if (days < 182) ancLabel = "Ouvert il y a 3–6 mois";
+    else if (days < 365) ancLabel = "Ouvert il y a 6–12 mois";
+    else                 ancLabel = "Ouvert il y a > 1 an";
+  }
+  smsItems.push({
+    label: ancLabel, pts: anc, max: 25,
+    active: anc > 0, source: "SIRENE",
+    unavailable: days === null && !s.signal_nouveau
+  });
+
+  smsItems.push({
+    label: "Avis négatifs récents",
+    pts: s.signal_avis_negatifs_recents ? 15 : 0, max: 15,
+    active: s.signal_avis_negatifs_recents, source: "Google Maps"
+  });
+
+  smsItems.push({
+    label: "Changement de gérant récent",
+    pts: s.signal_changement_gerant ? 15 : 0, max: 15,
+    active: s.signal_changement_gerant, source: "SIRENE / Pappers"
+  });
+
+  const nb = countActiveSignals(s);
+  smsItems.push({
+    label: `Vélocité (${nb} signal${nb !== 1 ? "s" : ""} actif${nb !== 1 ? "s" : ""})`,
+    pts: nb >= 3 ? 15 : 0, max: 15,
+    active: nb >= 3, source: "Ensemble des signaux"
+  });
+
+  return { profil, sms: smsItems };
+}
+
+// ──────────────────────────────────────────────────────────────
+// MESSAGE ENGINE
+// ──────────────────────────────────────────────────────────────
+function ageEnClair(dateStr) {
+  if (!dateStr) return "récemment ouvert";
+  const d = new Date(dateStr);
+  if (isNaN(d)) return "récemment ouvert";
+  const j = Math.floor((Date.now() - d.getTime()) / 86400000);
+  if (j < 14)  return "ouvert il y a moins de 2 semaines";
+  if (j < 60)  { const w = Math.floor(j / 7);  return `ouvert il y a ${w} semaine${w > 1 ? "s" : ""}`; }
+  if (j < 365) { const m = Math.floor(j / 30); return `ouvert il y a ${m} mois`; }
+  const a = Math.floor(j / 365); return `ouvert il y a ${a} an${a > 1 ? "s" : ""}`;
+}
+
+function segmentScore(ss, category, name) {
+  if (!ss.segment_keywords.length) return 0;
+  const t = (category + " " + name).toLowerCase();
+  return ss.segment_keywords.some(k => t.includes(k)) ? 2 : 0;
+}
+
+function matchSS(s) {
+  const gap  = topSolutionGap(s);
+  const prio = gap && SOLUTION_MAP[gap] ? new Set(SOLUTION_MAP[gap].ss_ids) : new Set();
+  const ff   = isFastFood(s.category, s.name);
+
+  function bestInPool(pool) {
+    let best = null, bestSc = -999;
+    for (const ss of pool) {
+      if (ss.fast_food_only && !ff) continue;
+      if (!ss.signals_requis.every(sig => s[sig])) continue;
+      const sc = segmentScore(ss, s.category, s.name)
+               + ss.signals_bonus.filter(sig => s[sig]).length
+               - ss.priority;
+      if (sc > bestSc) { bestSc = sc; best = ss; }
+    }
+    return best;
+  }
+
+  if (prio.size) {
+    const pool = SS_CORPUS.filter(ss => prio.has(ss.id));
+    const r = bestInPool(pool);
+    if (r) return r;
+  }
+  return bestInPool(SS_CORPUS);
+}
+
+function detailPhrase(s) {
+  const note = parseFloat(s.review_rating) || 0;
+  const nb   = parseInt(s.review_count, 10) || 0;
+
+  if (s.signal_note_faible && note) {
+    return `Votre note de ${note}/5 sur Google reflète souvent des frictions en caisse ou en salle — exactement ce que la digitalisation résout.`;
+  }
+  if (s.signal_avis_negatifs_recents) {
+    return "Vos derniers avis mentionnent des temps d'attente — c'est exactement le problème que nos clients ont résolu en quelques semaines.";
+  }
+  if (!nb) {
+    const cat = s.category.toLowerCase();
+    if (["burger","poulet","chicken","kebab","poke","sandwich","snack","fast","rapide"].some(k => cat.includes(k))) {
+      return "Les concepts rapides qui s'équipent dès l'ouverture évitent 6 mois de reconfiguration — et gardent leur marge dès la première commande.";
+    }
+    if (["brasserie","bar","café","bistro"].some(k => cat.includes(k))) {
+      return "Les bars et brasseries qui digitalisent à l'ouverture génèrent plus de recommandations dès le premier service — avant que les habitudes ne se figent.";
+    }
+    if (["boulangerie","pâtisserie","artisan"].some(k => cat.includes(k))) {
+      return "En boulangerie, chaque minute gagnée en caisse se traduit directement en satisfaction client — et en fidélisation.";
+    }
+    if (["collectif","traiteur","cafétéria","cantine"].some(k => cat.includes(k))) {
+      return "En restauration collective, chaque minute gagnée par convive se traduit directement en satisfaction — et en renouvellement de contrat.";
+    }
+    return "Dès l'ouverture, les bons outils font la différence — vos premières habitudes de service se construisent maintenant.";
+  }
+  if (!note) return null;
+  if (nb < 15)  return `Avec ${nb} avis Google seulement, vous êtes encore peu visible — chaque client bien servi devient un ambassadeur.`;
+  if (nb < 60)  return `Vos ${nb} premiers clients vous ont donné ${note}/5 — construisez sur cette base avant que le volume n'augmente.`;
+  if (nb < 250) return `Vos ${nb} avis à ${note}/5 montrent que vous servez bien — l'enjeu est de tenir ce niveau sans saturer l'équipe.`;
+  if (nb < 700) return `${nb} avis à ${note}/5 : vous avez une vraie réputation. Ne la fragilisez pas avec des files d'attente en caisse.`;
+  return `${nb} avis à ${note}/5 — vos clients sont fidèles depuis longtemps. L'étape suivante, c'est l'efficacité opérationnelle.`;
+}
+
+function buildMessage(s, ss) {
+  const nom = (s.name || "Ce restaurant").trim();
+  const age = ageEnClair(s.date);
+
+  let hookTpl = null;
+  if (s.signal_plateforme_uniquement && ss.hook_platform)  hookTpl = ss.hook_platform;
+  else if (s.signal_sans_livraison   && ss.hook_no_delivery) hookTpl = ss.hook_no_delivery;
+  else hookTpl = ss.hook_no_online || ss.hook_platform || "";
+
+  const hook    = hookTpl ? hookTpl.replace("{nom}", nom).replace("{age}", age) : `${nom}, vous êtes ${age}.`;
+  const detail  = detailPhrase(s);
+  const preuve  = `${ss.client} : ${ss.kpi}.`;
+  const citation = `"${ss.citation}"`;
+  const cta     = "On vous montre comment en 10 minutes ?";
+
+  return [hook, detail, preuve, citation, cta].filter(Boolean).join("\n\n");
+}
+
+// ──────────────────────────────────────────────────────────────
+// RENDERING
+// ──────────────────────────────────────────────────────────────
+function renderToggles() {
+  for (const group of TOGGLE_GROUPS) {
+    const el = document.getElementById(group.id);
+    if (!el) continue;
+    el.innerHTML = group.signals.map(sig => `
+      <label class="toggle-item${sig.malus ? " is-malus" : ""}${S[sig.id] ? " is-on" : ""}" id="ti-${sig.id}">
+        <div class="toggle-text">
+          <span class="toggle-name">${sig.name}</span>
+          <span class="toggle-pts">${sig.pts}</span>
+          ${sig.hint ? `<span class="toggle-hint">${sig.hint}</span>` : ""}
+        </div>
+        <div class="switch">
+          <input type="checkbox" id="sw-${sig.id}" ${S[sig.id] ? "checked" : ""}
+            onchange="onToggle('${sig.id}', this.checked)">
+          <span class="switch-track"></span>
+        </div>
+      </label>
+    `).join("");
+  }
+}
+
+function refreshToggles() {
+  for (const group of TOGGLE_GROUPS) {
+    for (const sig of group.signals) {
+      const item = document.getElementById("ti-" + sig.id);
+      const inp  = document.getElementById("sw-" + sig.id);
+      if (item) item.classList.toggle("is-on", !!S[sig.id]);
+      if (inp)  inp.checked = !!S[sig.id];
+    }
+  }
+}
+
+const LABEL_CFG = {
+  PRIORITAIRE: { cls: "lbl-prioritaire", text: "PRIORITAIRE" },
+  CHAUD:       { cls: "lbl-chaud",       text: "CHAUD" },
+  "TIÈDE":     { cls: "lbl-tiede",       text: "TIÈDE" },
+  FROID:       { cls: "lbl-froid",       text: "FROID" },
+  EXCLU:       { cls: "lbl-exclu",       text: "EXCLU" }
+};
+
+function e(str) {
+  if (!str) return "";
+  return String(str).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function renderDetailRow(item) {
+  let iconCls = "di-inactive", iconChar = "–";
+  if (item.unavailable)                               { iconCls = "di-blocked";  iconChar = "?"; }
+  else if (item.type === "malus" && item.active)      { iconCls = "di-malus";    iconChar = "↓"; }
+  else if (item.blocked_by)                           { iconCls = "di-blocked";  iconChar = "↷"; }
+  else if (item.active)                               { iconCls = "di-active";   iconChar = "✓"; }
+
+  let ptsCls = "pts-zero", ptsStr = "";
+  if (item.active && item.pts > 0)   { ptsCls = "pts-pos";  ptsStr = `+${item.pts}`; }
+  if (item.active && item.pts < 0)   { ptsCls = "pts-neg";  ptsStr = `${item.pts}`; }
+  if (item.active && item.pts === 0) { ptsCls = "pts-zero"; ptsStr = "0"; }
+
+  const blockedTag = item.blocked_by
+    ? ` <span class="di-blocked-tag">(bloqué : ${e(item.blocked_by)})</span>`
+    : "";
+
+  return `
+    <div class="detail-row">
+      <div class="di-icon ${iconCls}">${iconChar}</div>
+      <div class="di-label">${e(item.label)}${blockedTag}</div>
+      <span class="di-pts ${ptsCls}">${ptsStr}</span>
+      <span class="di-source">${e(item.source)}</span>
+    </div>`;
+}
+
+function renderDetail(detail) {
+  const sections = [
+    { title: 'Score Profil — "est-ce un bon lead ?"',   items: detail.profil },
+    { title: 'Score Signal — "est-ce le bon moment ?"', items: detail.sms }
+  ];
+  const container = document.getElementById("detail-container");
+  container.innerHTML = sections.map(sec => {
+    const total = sec.items.reduce((s, i) => s + (i.pts || 0), 0);
+    const sign  = total >= 0 ? "+" : "";
+    return `
+      <div class="acc-block">
+        <button class="acc-trigger is-open" onclick="toggleAcc(this)">
+          <span>${e(sec.title)} &nbsp;<span class="acc-pts-total">${sign}${total} pts</span></span>
+          <span class="acc-chevron">▼</span>
+        </button>
+        <div class="acc-body is-open">
+          ${sec.items.map(renderDetailRow).join("")}
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function renderSS(ss, gap) {
+  const zone   = document.getElementById("ss-zone");
+  const gapTag = document.getElementById("ss-gap-tag");
+
+  if (!ss) {
+    zone.innerHTML = `<div class="empty-state">Aucune success story correspondante pour ce profil.</div>`;
+    gapTag.style.display = "none";
+    return;
+  }
+
+  const gapLabel = gap && SOLUTION_MAP[gap] ? SOLUTION_MAP[gap].label : null;
+  if (gapLabel) {
+    gapTag.textContent = "Gap : " + gapLabel;
+    gapTag.style.display = "inline-flex";
+  } else {
+    gapTag.style.display = "none";
+  }
+
+  zone.innerHTML = `
+    <div class="ss-inner">
+      <div class="ss-client">${e(ss.client)}</div>
+      <div class="ss-kpi">${e(ss.kpi)}</div>
+      <div class="ss-citation">${e(ss.citation)}</div>
+    </div>`;
+}
+
+// ── Cartographie concurrentielle (Section 8 du document) ─────
+function renderCarto(ss) {
+  const card = document.getElementById("card-carto");
+  const zone = document.getElementById("carto-zone");
+
+  if (!ss || !CARTO_DATA[ss.id]) {
+    card.style.display = "none";
+    return;
+  }
+
+  const c = CARTO_DATA[ss.id];
+  card.style.display = "";
+
+  const anchorMsg = `"Dans votre secteur, un concept comparable — ${c.prospect_zone.toLowerCase()} — ${ss.kpi.toLowerCase()}."`;
+
+  zone.innerHTML = `
+    <div class="carto-inner">
+      <div class="carto-row">
+        <span class="carto-key">Client référence</span>
+        <span class="carto-val"><strong>${e(ss.client)}</strong> — ${e(c.client_loc)}</span>
+      </div>
+      <div class="carto-row">
+        <span class="carto-key">Zone de prospection</span>
+        <span class="carto-val-strong">${e(c.prospect_zone)}</span>
+      </div>
+      <div class="carto-row">
+        <span class="carto-key">Rayon</span>
+        <span class="carto-val">${e(c.radius)}</span>
+      </div>
+      <div class="carto-row">
+        <span class="carto-key">Prospects estimés</span>
+        <span class="carto-val"><span class="carto-nb">${e(c.nb_prospects)}</span></span>
+      </div>
+      <div class="carto-anchor-box">
+        <span class="carto-anchor-label">Message ancré géographiquement</span>
+        <div class="carto-anchor-msg">${e(anchorMsg)}</div>
+      </div>
+    </div>`;
+}
+
+// ── Objections anticipées (Section 6 du document) ─────────────
+function renderObj(s, label) {
+  const card = document.getElementById("card-objections");
+  const zone = document.getElementById("obj-zone");
+
+  // N'afficher qu'à partir de CHAUD (pas la peine si score trop faible)
+  if (label === "FROID" || label === "EXCLU") {
+    card.style.display = "none";
+    return;
+  }
+
+  const applicable = OBJECTIONS_DATA.filter(obj => obj.condition(s));
+
+  if (!applicable.length) {
+    card.style.display = "none";
+    return;
+  }
+
+  card.style.display = "";
+  zone.innerHTML = `
+    <div class="obj-list">
+      ${applicable.map(obj => `
+        <div class="obj-item">
+          <div class="obj-question">${e(obj.question)}</div>
+          <div class="obj-reponse">${e(obj.reponse)}</div>
+          <div class="obj-source">Source : ${e(obj.source)}</div>
+        </div>
+      `).join("")}
+    </div>`;
+}
+
+function renderMsg(s, ss, label) {
+  const zone = document.getElementById("msg-zone");
+
+  if (label === "EXCLU") {
+    zone.innerHTML = `<div class="exclu-banner">⛔ Restaurant exclu du pipeline — signal_ferme actif.</div>`;
+    return;
+  }
+  if (label === "FROID") {
+    zone.innerHTML = `<div class="empty-state">Score insuffisant pour générer un message (FROID — score &lt; 20).</div>`;
+    return;
+  }
+  if (!ss) {
+    zone.innerHTML = `<div class="empty-state">Aucun message généré — aucune success story correspondante.</div>`;
+    return;
+  }
+
+  const msg = buildMessage(s, ss);
+  zone.innerHTML = `
+    <div class="message-box" id="msg-text">${e(msg)}</div>
+    <div class="message-foot">
+      <span class="message-note">Généré sans IA — règles métier uniquement</span>
+      <button class="btn-copy" id="btn-copy" onclick="copyMsg()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        Copier
+      </button>
+    </div>`;
+}
+
+// ──────────────────────────────────────────────────────────────
+// SCORE ANIMATION
+// ──────────────────────────────────────────────────────────────
+let _animFrame = null;
+let _dispScore = 0;
+
+function animScore(target) {
+  if (_animFrame) cancelAnimationFrame(_animFrame);
+  const from = _dispScore;
+  const diff = target - from;
+  const dur  = 320;
+  const t0   = performance.now();
+  function step(now) {
+    const p    = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    document.getElementById("score-num").textContent = Math.round(from + diff * ease);
+    if (p < 1) _animFrame = requestAnimationFrame(step);
+    else _dispScore = target;
+  }
+  _animFrame = requestAnimationFrame(step);
+  _dispScore = target;
+}
+
+// ──────────────────────────────────────────────────────────────
+// MAIN UPDATE LOOP
+// ──────────────────────────────────────────────────────────────
+function update() {
+  const res    = computeScore(S);
+  const detail = buildDetail(S);
+  const ss     = (res.label !== "EXCLU" && res.label !== "FROID") ? matchSS(S) : null;
+  const gap    = topSolutionGap(S);
+
+  // Score numbers + bars
+  // FIX : normalisation corrigée — Profil/136, Signal/70
+  animScore(res.total);
+  document.getElementById("bar-profil-v").textContent = res.sp;
+  document.getElementById("bar-sms-v").textContent    = res.sms;
+  document.getElementById("bar-profil").style.width   = Math.min(100, (res.sp  / 136) * 100) + "%";
+  document.getElementById("bar-sms").style.width      = Math.min(100, (res.sms / 70)  * 100) + "%";
+
+  // Label badge
+  const cfg   = LABEL_CFG[res.label] || LABEL_CFG["FROID"];
+  const badge = document.getElementById("label-badge");
+  badge.className = "label-badge " + cfg.cls;
+  badge.innerHTML = `<span class="badge-dot"></span> ${cfg.text}`;
+
+  renderDetail(detail);
+  renderSS(ss, gap);
+  renderCarto(ss);
+  renderObj(S, res.label);
+  renderMsg(S, ss, res.label);
+}
+
+// ──────────────────────────────────────────────────────────────
+// EVENT HANDLERS
+// ──────────────────────────────────────────────────────────────
+function syncAndUpdate() {
+  S.name          = document.getElementById("f-name").value || "Restaurant";
+  S.category      = document.getElementById("f-cat").value;
+  S.date          = document.getElementById("f-date").value || null;
+  S.review_rating = parseFloat(document.getElementById("f-note").value) || 0;
+  S.review_count  = parseInt(document.getElementById("f-avis").value, 10) || 0;
+  clearActiveScenario();
+  update();
+}
+
+// FIX : exclusivité mutuelle signal_plateforme_uniquement ↔ signal_sans_livraison
+function onToggle(id, val) {
+  S[id] = val;
+  if (val && id === "signal_plateforme_uniquement") S.signal_sans_livraison = false;
+  if (val && id === "signal_sans_livraison")        S.signal_plateforme_uniquement = false;
+  refreshToggles();
+  clearActiveScenario();
+  update();
+}
+
+// FIX : reset complet des signaux avant d'appliquer le scénario
+//       (évite la persistance de signaux d'un scénario précédent)
+const USER_SIGNALS = [
+  "signal_nouveau", "signal_plateforme_uniquement", "signal_sans_livraison",
+  "signal_sans_commande_salle", "signal_sans_commande_distante",
+  "signal_sans_site", "signal_sans_reservation",
+  "signal_note_faible", "signal_avis_negatifs_recents",
+  "signal_changement_gerant", "signal_deja_equipe", "signal_ferme"
+];
+
+function applyScenario(name, btn) {
+  const sc = SCENARIOS[name];
+  if (!sc) return;
+
+  S.name          = sc.name;
+  S.category      = sc.category;
+  S.date          = sc.date;
+  S.review_rating = sc.review_rating;
+  S.review_count  = sc.review_count;
+
+  // Reset tous les signaux utilisateur avant application
+  for (const sig of USER_SIGNALS) S[sig] = false;
+  Object.assign(S, sc.signals);
+
+  document.getElementById("f-name").value     = sc.name;
+  document.getElementById("f-cat").value      = sc.category;
+  document.getElementById("f-date").value     = sc.date || "";
+  document.getElementById("f-note").value     = sc.review_rating;
+  document.getElementById("f-avis").value     = sc.review_count;
+
+  refreshToggles();
+
+  document.querySelectorAll(".btn-scenario").forEach(b => b.classList.remove("is-active"));
+  if (btn) btn.classList.add("is-active");
+
+  update();
+}
+
+function clearActiveScenario() {
+  document.querySelectorAll(".btn-scenario").forEach(b => b.classList.remove("is-active"));
+}
+
+function toggleAcc(trigger) {
+  trigger.classList.toggle("is-open");
+  trigger.nextElementSibling.classList.toggle("is-open");
+}
+
+function copyMsg() {
+  const el = document.getElementById("msg-text");
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent.trim()).then(() => {
+    const btn = document.getElementById("btn-copy");
+    btn.classList.add("copied");
+    btn.innerHTML = `
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      Copié !`;
+    setTimeout(() => {
+      btn.classList.remove("copied");
+      btn.innerHTML = `
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        Copier`;
+    }, 2000);
+  }).catch(() => {
+    const r = document.createRange();
+    r.selectNode(el);
+    window.getSelection().removeAllRanges();
+    window.getSelection().addRange(r);
+    document.execCommand("copy");
+    window.getSelection().removeAllRanges();
+  });
+}
+
+// ──────────────────────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────────────────────
+document.addEventListener("DOMContentLoaded", () => {
+  renderToggles();
+  applyScenario("fastfood", document.querySelector('[data-sc="fastfood"]'));
+});
+</script>
+
+</body>
+</html>

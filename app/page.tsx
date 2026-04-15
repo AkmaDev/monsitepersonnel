@@ -37,6 +37,13 @@ const links: LinkItem[] = [
     icon: BookOpen,
   },
   {
+    title: "RADAR — Simulateur de qualification B2B",
+    description: "Moteur de scoring qui transforme des success stories en machine à prospecter. Testez en live.",
+    url: "/radar",
+    icon: ExternalLink,
+    primary: true,
+  },
+  {
     title: "Projets Personnels",
     description: "Mes dernières créations graphiques, affiches et vidéos",
     url: "/portfoliodesign",
