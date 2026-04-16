@@ -161,7 +161,7 @@ export default function Restaurants93Page() {
           </p>
           <div className="rounded-xl overflow-hidden border border-border">
             <iframe
-              src="https://flowise-production-d16d.up.railway.app/chatbot/16d96990-655b-48ef-bb95-9c2977fd8819"
+              src="https://cloud.flowiseai.com/chatbot/6cd1d206-ade6-4b5f-9a45-e191127e829e"
               style={{ width: "100%", height: "600px", border: "none" }}
               title="Chatbot Restaurants 93"
             />

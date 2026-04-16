@@ -142,6 +142,22 @@ projects: [
     year: "2026",
   },
   {
+    title: "Chatbot RAG — Restaurants Seine-Saint-Denis",
+    description:
+      "431 749 restaurants SIRENE enrichis via 7 sources (GPS, téléphones, horaires, notes Google), transformés en chatbot conversationnel. RAG avec Flowise + Claude API — zéro hallucination, déployable sur site web et WhatsApp Business.",
+    type: "Projet de soutenance",
+    technologies: ["Python", "Flowise", "Claude API", "RAG", "Supabase", "Railway", "n8n"],
+    status: "Terminé",
+    link: "https://www.manasseakpovi.com/restaurants-93",
+    github: undefined,
+    features: [
+      "Pipeline SIRENE → enrichissement multi-sources → indexation vectorielle",
+      "Chatbot RAG connecté aux données internes — zéro hallucination",
+      "Déployable sur site web et WhatsApp Business via Twilio",
+    ],
+    year: "2026",
+  },
+  {
     title: "Pipeline IA — Prospection B2B via BODACC",
     description:
       "Détecte chaque matin les restaurants nouvellement ouverts dans le registre officiel français (BODACC), les score sur 15 critères, puis génère une séquence de 5 emails personnalisés avec Claude. Dashboard Streamlit pour envoyer et suivre les leads. Règles strictes anti-hallucination : zéro stat inventée, zéro nom fictif.",
